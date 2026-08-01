@@ -1,0 +1,101 @@
+{
+  "id": "power_accessories",
+  "name": "Power & Charging Accessories",
+  "brands": ["Anker", "Apple", "Samsung", "Xiaomi", "Realme", "OnePlus"],
+
+  "category": "power_accessories",
+  "products": [
+    {
+      "id": "pw-001",
+      "brand": "Anker",
+      "model": "PowerCore 20000mAh",
+      "price": 3499,
+      "currency": "INR",
+      "specs": {
+        "type": "Power Bank",
+        "capacity": "20000mAh",
+        "output": "20W PD",
+        "ports": "USB-C, USB-A"
+      },
+      "stock": 50
+    },
+    {
+      "id": "pw-002",
+      "brand": "Anker",
+      "model": "Nano II 65W GaN Charger",
+      "price": 3999,
+      "currency": "INR",
+      "specs": {
+        "type": "Wall Charger",
+        "output": "65W",
+        "ports": "USB-C"
+      },
+      "stock": 45
+    },
+    {
+      "id": "pw-003",
+      "brand": "Apple",
+      "model": "MagSafe Charger",
+      "price": 4500,
+      "currency": "INR",
+      "specs": {
+        "type": "Wireless Charger",
+        "output": "15W",
+        "connectivity": "MagSafe"
+      },
+      "stock": 30
+    },
+    {
+      "id": "pw-004",
+      "brand": "Samsung",
+      "model": "25W Travel Adapter",
+      "price": 1999,
+      "currency": "INR",
+      "specs": {
+        "type": "Wall Charger",
+        "output": "25W",
+        "ports": "USB-C"
+      },
+      "stock": 40
+    },
+    {
+      "id": "pw-005",
+      "brand": "Xiaomi",
+      "model": "120W HyperCharge Combo",
+      "price": 2299,
+      "currency": "INR",
+      "specs": {
+        "type": "Wall Charger",
+        "output": "120W",
+        "ports": "USB-C"
+      },
+      "stock": 35
+    },
+    {
+      "id": "pw-006",
+      "brand": "Realme",
+      "model": "65W SuperDart Charger",
+      "price": 1799,
+      "currency": "INR",
+      "specs": {
+        "type": "Wall Charger",
+        "output": "65W",
+        "ports": "USB-C"
+      },
+      "stock": 38
+    },
+    {
+      "id": "pw-007",
+      "brand": "OnePlus",
+      "model": "SuperVOOC 80W Charger",
+      "price": 2499,
+      "currency": "INR",
+      "specs": {
+        "type": "Wall Charger",
+        "output": "80W",
+        "ports": "USB-C"
+      },
+      "stock": 26
+    }
+  ]
+}

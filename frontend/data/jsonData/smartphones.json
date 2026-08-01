@@ -1,0 +1,340 @@
+{
+  "id": "smartphones",
+  "name": "Smartphones",
+  "brands": [
+    "Apple",
+    "Samsung",
+    "Google",
+    "OnePlus",
+    "Xiaomi",
+    "Realme",
+    "Nothing",
+    "Motorola",
+    "Sony",
+    "Asus"
+  ],
+
+  "category": "smartphones",
+  "products": [
+    {
+      "id": "sp-001",
+      "brand": "Apple",
+      "model": "iPhone 15",
+      "price": 79900,
+      "currency": "INR",
+      "specs": {
+        "ram": "6GB",
+        "storage": "128GB",
+        "display": "6.1 inch OLED",
+        "camera": "48MP + 12MP",
+        "battery": "3349mAh"
+      },
+      "stock": 25,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-002",
+      "brand": "Apple",
+      "model": "iPhone 15 Pro",
+      "price": 134900,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "256GB",
+        "display": "6.1 inch OLED",
+        "camera": "48MP + 12MP + 12MP",
+        "battery": "3274mAh"
+      },
+      "stock": 12,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-003",
+      "brand": "Samsung",
+      "model": "Galaxy S24",
+      "price": 74999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "256GB",
+        "display": "6.2 inch Dynamic AMOLED",
+        "camera": "50MP + 12MP + 10MP",
+        "battery": "4000mAh"
+      },
+      "stock": 30,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-004",
+      "brand": "Samsung",
+      "model": "Galaxy A54",
+      "price": 33999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "128GB",
+        "display": "6.4 inch Super AMOLED",
+        "camera": "50MP + 12MP + 5MP",
+        "battery": "5000mAh"
+      },
+      "stock": 40,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-005",
+      "brand": "Google",
+      "model": "Pixel 8",
+      "price": 75999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "128GB",
+        "display": "6.2 inch OLED",
+        "camera": "50MP + 12MP",
+        "battery": "4575mAh"
+      },
+      "stock": 18,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-006",
+      "brand": "Google",
+      "model": "Pixel 8 Pro",
+      "price": 106999,
+      "currency": "INR",
+      "specs": {
+        "ram": "12GB",
+        "storage": "256GB",
+        "display": "6.7 inch LTPO OLED",
+        "camera": "50MP + 48MP + 48MP",
+        "battery": "5050mAh"
+      },
+      "stock": 10,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-007",
+      "brand": "OnePlus",
+      "model": "OnePlus 12",
+      "price": 64999,
+      "currency": "INR",
+      "specs": {
+        "ram": "12GB",
+        "storage": "256GB",
+        "display": "6.82 inch AMOLED",
+        "camera": "50MP + 64MP + 48MP",
+        "battery": "5400mAh"
+      },
+      "stock": 22,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-008",
+      "brand": "OnePlus",
+      "model": "OnePlus Nord CE 4",
+      "price": 24999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "128GB",
+        "display": "6.7 inch AMOLED",
+        "camera": "50MP + 8MP",
+        "battery": "5500mAh"
+      },
+      "stock": 35,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-009",
+      "brand": "Xiaomi",
+      "model": "Redmi Note 13 Pro",
+      "price": 26999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "256GB",
+        "display": "6.67 inch AMOLED",
+        "camera": "200MP + 8MP + 2MP",
+        "battery": "5100mAh"
+      },
+      "stock": 50,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-010",
+      "brand": "Xiaomi",
+      "model": "Xiaomi 14",
+      "price": 69999,
+      "currency": "INR",
+      "specs": {
+        "ram": "12GB",
+        "storage": "256GB",
+        "display": "6.36 inch AMOLED",
+        "camera": "50MP + 50MP + 50MP",
+        "battery": "4610mAh"
+      },
+      "stock": 15,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-011",
+      "brand": "Realme",
+      "model": "Realme 12 Pro+",
+      "price": 29999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "256GB",
+        "display": "6.7 inch AMOLED",
+        "camera": "50MP + 64MP + 8MP",
+        "battery": "5000mAh"
+      },
+      "stock": 28,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-012",
+      "brand": "Realme",
+      "model": "Realme Narzo 70",
+      "price": 15999,
+      "currency": "INR",
+      "specs": {
+        "ram": "6GB",
+        "storage": "128GB",
+        "display": "6.67 inch AMOLED",
+        "camera": "50MP + 2MP",
+        "battery": "5000mAh"
+      },
+      "stock": 45,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-013",
+      "brand": "Nothing",
+      "model": "Nothing Phone 2",
+      "price": 44999,
+      "currency": "INR",
+      "specs": {
+        "ram": "12GB",
+        "storage": "256GB",
+        "display": "6.7 inch OLED",
+        "camera": "50MP + 50MP",
+        "battery": "4700mAh"
+      },
+      "stock": 14,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-014",
+      "brand": "Nothing",
+      "model": "Nothing Phone 2a",
+      "price": 23999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "128GB",
+        "display": "6.7 inch AMOLED",
+        "camera": "50MP + 50MP",
+        "battery": "5000mAh"
+      },
+      "stock": 20,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-015",
+      "brand": "Motorola",
+      "model": "Moto Edge 50 Pro",
+      "price": 31999,
+      "currency": "INR",
+      "specs": {
+        "ram": "12GB",
+        "storage": "256GB",
+        "display": "6.7 inch pOLED",
+        "camera": "50MP + 13MP + 10MP",
+        "battery": "4500mAh"
+      },
+      "stock": 17,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-016",
+      "brand": "Motorola",
+      "model": "Moto G84",
+      "price": 18999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "128GB",
+        "display": "6.5 inch pOLED",
+        "camera": "50MP + 8MP",
+        "battery": "5000mAh"
+      },
+      "stock": 33,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-017",
+      "brand": "Sony",
+      "model": "Xperia 1 VI",
+      "price": 109999,
+      "currency": "INR",
+      "specs": {
+        "ram": "12GB",
+        "storage": "256GB",
+        "display": "6.5 inch OLED",
+        "camera": "48MP + 48MP + 12MP",
+        "battery": "5000mAh"
+      },
+      "stock": 6,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-018",
+      "brand": "Sony",
+      "model": "Xperia 10 VI",
+      "price": 44999,
+      "currency": "INR",
+      "specs": {
+        "ram": "8GB",
+        "storage": "128GB",
+        "display": "6.1 inch OLED",
+        "camera": "48MP + 8MP",
+        "battery": "5000mAh"
+      },
+      "stock": 9,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-019",
+      "brand": "Asus",
+      "model": "ROG Phone 8",
+      "price": 89999,
+      "currency": "INR",
+      "specs": {
+        "ram": "16GB",
+        "storage": "512GB",
+        "display": "6.78 inch AMOLED 165Hz",
+        "camera": "50MP + 13MP",
+        "battery": "5500mAh"
+      },
+      "stock": 8,
+      "image": "placeholder.jpg"
+    },
+    {
+      "id": "sp-020",
+      "brand": "Asus",
+      "model": "Zenfone 11 Ultra",
+      "price": 74999,
+      "currency": "INR",
+      "specs": {
+        "ram": "12GB",
+        "storage": "256GB",
+        "display": "6.78 inch AMOLED",
+        "camera": "50MP + 13MP + 32MP",
+        "battery": "5500mAh"
+      },
+      "stock": 11,
+      "image": "placeholder.jpg"
+    }
+  ]
+}

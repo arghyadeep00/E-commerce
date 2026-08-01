@@ -1,1 +1,0 @@
-export function Rating() { return <div>Rating Component</div>; }
