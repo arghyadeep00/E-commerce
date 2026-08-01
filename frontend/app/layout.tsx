@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ShopHub | Premium E-Commerce",
-  description: "Your one-stop shop for everything.",
+  title: "Antigravity | Premium E-Commerce",
+  description: "Experience the next generation of online shopping.",
 };
 
 export default function RootLayout({
@@ -16,15 +18,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-gray-50 min-h-screen flex flex-col`}>
-        <Navbar />
-        <main className="grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {children}
-        </main>
-        <footer className="bg-white border-t border-gray-200 py-6 text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} ShopHub. All rights reserved.
-        </footer>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} min-h-screen bg-background text-foreground flex flex-col antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main className="flex-1 flex flex-col">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,0 +1,75 @@
+[
+  {
+    "id": "1",
+    "name": "Wireless Noise-Cancelling Headphones",
+    "description": "Experience premium sound quality with industry-leading noise cancellation. Perfect for commuting, working, or just relaxing.",
+    "price": 299.99,
+    "compareAtPrice": 349.99,
+    "images": [
+      "/images/products/headphones-1.jpg",
+      "/images/products/headphones-2.jpg"
+    ],
+    "category": "Electronics",
+    "brand": "SonicAudio",
+    "rating": 4.8,
+    "reviews": 1245,
+    "stock": 50,
+    "isFeatured": true,
+    "isBestSeller": true,
+    "features": ["Active Noise Cancellation", "30-hour battery life", "Bluetooth 5.2", "Built-in microphone"]
+  },
+  {
+    "id": "2",
+    "name": "Minimalist Smartwatch Series 7",
+    "description": "Stay connected and track your fitness with this sleek, minimalist smartwatch. Features a high-resolution retina display and always-on capability.",
+    "price": 199.50,
+    "compareAtPrice": 249.00,
+    "images": [
+      "/images/products/smartwatch-1.jpg"
+    ],
+    "category": "Wearables",
+    "brand": "TechTime",
+    "rating": 4.6,
+    "reviews": 890,
+    "stock": 120,
+    "isFeatured": true,
+    "isBestSeller": false,
+    "features": ["Heart rate monitor", "Water resistant 50m", "GPS tracking", "7-day battery"]
+  },
+  {
+    "id": "3",
+    "name": "Ergonomic Office Chair",
+    "description": "Designed for long hours of work, this chair provides lumbar support, adjustable armrests, and a breathable mesh back.",
+    "price": 159.00,
+    "compareAtPrice": null,
+    "images": [
+      "/images/products/chair-1.jpg"
+    ],
+    "category": "Furniture",
+    "brand": "WorkWell",
+    "rating": 4.5,
+    "reviews": 320,
+    "stock": 15,
+    "isFeatured": false,
+    "isBestSeller": true,
+    "features": ["Adjustable lumbar support", "Breathable mesh", "360-degree swivel", "Recline mechanism"]
+  },
+  {
+    "id": "4",
+    "name": "Ultra-Slim 4K Monitor",
+    "description": "27-inch 4K UHD display with stunning color accuracy. Ideal for creative professionals and avid gamers.",
+    "price": 349.00,
+    "compareAtPrice": 399.00,
+    "images": [
+      "/images/products/monitor-1.jpg"
+    ],
+    "category": "Computers",
+    "brand": "Visionary",
+    "rating": 4.9,
+    "reviews": 56,
+    "stock": 0,
+    "isFeatured": true,
+    "isBestSeller": false,
+    "features": ["4K UHD Resolution", "IPS Panel", "99% sRGB", "USB-C Connectivity"]
+  }
+]
