@@ -1,10 +1,10 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface User {
   _id: string;
   name: string;
   email: string;
-  role: 'customer' | 'admin' | 'seller';
+  role: "customer" | "admin" | "seller";
   token: string;
 }
 
@@ -15,17 +15,20 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userInfo') || 'null') : null,
+  user:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("userInfo") || "null")
+      : null,
   setUser: (user) => {
     if (user) {
-      localStorage.setItem('userInfo', JSON.stringify(user));
+      localStorage.setItem("userInfo", JSON.stringify(user));
     } else {
-      localStorage.removeItem('userInfo');
+      localStorage.removeItem("userInfo");
     }
     set({ user });
   },
   logout: () => {
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem("userInfo");
     set({ user: null });
   },
 }));

@@ -1,0 +1,1 @@
+export function CouponBox() { return <div>CouponBox Component</div>; }

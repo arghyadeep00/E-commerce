@@ -1,0 +1,25 @@
+{
+  "id": "PRD001",
+  "name": "iPhone 17 Pro",
+  "slug": "iphone-17-pro",
+  "brand": "Apple",
+  "category": "Smartphones",
+  "price": 1199,
+  "discount": 10,
+  "discountPrice": 1079,
+  "stock": 45,
+  "rating": 4.9,
+  "reviews": 985,
+  "images": [],
+  "colors": ["Black", "White", "Titanium", "Blue"],
+  "storage": ["128GB", "256GB", "512GB", "1TB"],
+  "description": "...",
+  "specifications": {
+    "Display": "6.7-inch OLED",
+    "Processor": "A19 Pro",
+    "RAM": "12GB",
+    "Battery": "5000mAh",
+    "Camera": "48MP Triple Camera",
+    "Operating System": "iOS"
+  }
+}

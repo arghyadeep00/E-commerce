@@ -1,0 +1,1 @@
+export function FlashSale() { return <div>FlashSale Component</div>; }

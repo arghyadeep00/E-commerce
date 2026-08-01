@@ -1,0 +1,1 @@
+export function ProductInfo() { return <div>ProductInfo Component</div>; }

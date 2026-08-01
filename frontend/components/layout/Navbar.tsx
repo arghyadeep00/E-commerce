@@ -15,21 +15,33 @@ export function Navbar() {
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center space-x-2">
               <span className="text-xl font-bold tracking-tight text-primary">
-                Antigravity
+                Online Shop
               </span>
             </Link>
-            
+
             <nav className="hidden md:flex gap-6">
-              <Link href="/products" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              <Link
+                href="/products"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
                 Shop
               </Link>
-              <Link href="/categories" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              <Link
+                href="/categories"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
                 Categories
               </Link>
-              <Link href="/brands" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              <Link
+                href="/brands"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
                 Brands
               </Link>
-              <Link href="/best-sellers" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              <Link
+                href="/best-sellers"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
                 Best Sellers
               </Link>
             </nav>
@@ -44,12 +56,16 @@ export function Navbar() {
                 className="h-9 w-64 rounded-md border border-input bg-transparent px-8 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               />
             </div>
-            
-            <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden sm:inline-flex"
+            >
               <User className="h-5 w-5" />
               <span className="sr-only">Account</span>
             </Button>
-            
+
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute top-1 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-primary-foreground">
@@ -86,11 +102,24 @@ export function Navbar() {
                 className="h-9 w-full rounded-md border border-input bg-transparent px-8 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               />
             </div>
-            <Link href="/products" className="text-sm font-medium">Shop</Link>
-            <Link href="/categories" className="text-sm font-medium">Categories</Link>
-            <Link href="/brands" className="text-sm font-medium">Brands</Link>
-            <Link href="/best-sellers" className="text-sm font-medium">Best Sellers</Link>
-            <Link href="/login" className="text-sm font-medium pt-2 border-t mt-2">Sign In</Link>
+            <Link href="/products" className="text-sm font-medium">
+              Shop
+            </Link>
+            <Link href="/categories" className="text-sm font-medium">
+              Categories
+            </Link>
+            <Link href="/brands" className="text-sm font-medium">
+              Brands
+            </Link>
+            <Link href="/best-sellers" className="text-sm font-medium">
+              Best Sellers
+            </Link>
+            <Link
+              href="/login"
+              className="text-sm font-medium pt-2 border-t mt-2"
+            >
+              Sign In
+            </Link>
           </div>
         </div>
       )}

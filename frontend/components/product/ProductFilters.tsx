@@ -1,0 +1,1 @@
+export function ProductFilters() { return <div>ProductFilters Component</div>; }

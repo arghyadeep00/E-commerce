@@ -1,0 +1,1 @@
+export function ProductReviews() { return <div>ProductReviews Component</div>; }

@@ -1,0 +1,1 @@
+export function FeaturedProducts() { return <div>FeaturedProducts Component</div>; }
