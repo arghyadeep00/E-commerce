@@ -18,45 +18,50 @@ export function Navbar() {
                 Online Shop
               </span>
             </Link>
-
-            <nav className="hidden md:flex gap-6">
-              <Link
-                href="/products"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Shop
-              </Link>
-              <Link
-                href="/categories"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Categories
-              </Link>
-              <Link
-                href="/brands"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Brands
-              </Link>
-              <Link
-                href="/best-sellers"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Best Sellers
-              </Link>
-            </nav>
           </div>
 
+          <nav className="hidden md:flex flex-1 items-center justify-center gap-6">
+            <Link
+              href="/products"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Shop
+            </Link>
+            <Link
+              href="/brands"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Brands
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              About
+            </Link>
+            <Link
+              href="/contact"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Contact
+            </Link>
+            <Link
+              href="/products"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Products
+            </Link>
+          </nav>
+
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <div className="relative hidden md:block">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="search"
                 placeholder="Search products..."
-                className="h-9 w-64 rounded-md border border-input bg-transparent px-8 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="h-10 w-56 rounded-full border border-input bg-transparent px-10 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               />
             </div>
-
             <Button
               variant="ghost"
               size="icon"
@@ -71,7 +76,9 @@ export function Navbar() {
               <span className="absolute top-1 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-primary-foreground">
                 3
               </span>
-              <span className="sr-only">Cart</span>
+              <span className="sr-only">
+                <Link href="/cart">Cart</Link>
+              </span>
             </Button>
 
             <Button

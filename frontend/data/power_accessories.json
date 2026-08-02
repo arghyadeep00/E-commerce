@@ -11,6 +11,11 @@
       "model": "PowerCore 20000mAh",
       "price": 3499,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Power Bank",
         "capacity": "20000mAh",
@@ -25,6 +30,11 @@
       "model": "Nano II 65W GaN Charger",
       "price": 3999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wall Charger",
         "output": "65W",
@@ -38,6 +48,11 @@
       "model": "MagSafe Charger",
       "price": 4500,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Charger",
         "output": "15W",
@@ -51,6 +66,11 @@
       "model": "25W Travel Adapter",
       "price": 1999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wall Charger",
         "output": "25W",
@@ -64,6 +84,11 @@
       "model": "120W HyperCharge Combo",
       "price": 2299,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wall Charger",
         "output": "120W",
@@ -77,6 +102,11 @@
       "model": "65W SuperDart Charger",
       "price": 1799,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wall Charger",
         "output": "65W",
@@ -90,6 +120,11 @@
       "model": "SuperVOOC 80W Charger",
       "price": 2499,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wall Charger",
         "output": "80W",

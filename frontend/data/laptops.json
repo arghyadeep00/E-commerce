@@ -23,6 +23,11 @@
       "model": "MacBook Air M3",
       "price": 114900,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "8GB",
         "storage": "256GB SSD",
@@ -38,6 +43,11 @@
       "model": "MacBook Pro 14 M3",
       "price": 169900,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",
@@ -53,6 +63,11 @@
       "model": "Galaxy Book4 Pro",
       "price": 139990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",
@@ -68,6 +83,11 @@
       "model": "XPS 13",
       "price": 119990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",
@@ -83,6 +103,11 @@
       "model": "Inspiron 15",
       "price": 54990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "8GB",
         "storage": "512GB SSD",
@@ -98,6 +123,11 @@
       "model": "Spectre x360",
       "price": 149990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "1TB SSD",
@@ -113,6 +143,11 @@
       "model": "Pavilion 14",
       "price": 58990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "8GB",
         "storage": "512GB SSD",
@@ -128,6 +163,11 @@
       "model": "ThinkPad X1 Carbon",
       "price": 159990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",
@@ -143,6 +183,11 @@
       "model": "IdeaPad Slim 5",
       "price": 52990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",
@@ -158,6 +203,11 @@
       "model": "ROG Zephyrus G14",
       "price": 169990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "1TB SSD",
@@ -174,6 +224,11 @@
       "model": "Vivobook 15",
       "price": 42990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "8GB",
         "storage": "512GB SSD",
@@ -189,6 +244,11 @@
       "model": "Predator Helios 16",
       "price": 179990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "1TB SSD",
@@ -205,6 +265,11 @@
       "model": "Aspire Lite 14",
       "price": 37990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "8GB",
         "storage": "512GB SSD",
@@ -220,6 +285,11 @@
       "model": "Raider GE78 HX",
       "price": 259990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "32GB",
         "storage": "2TB SSD",
@@ -236,6 +306,11 @@
       "model": "Modern 14",
       "price": 54990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",
@@ -251,6 +326,11 @@
       "model": "Gram 17",
       "price": 139990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",
@@ -266,6 +346,11 @@
       "model": "Blade 16",
       "price": 289990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "32GB",
         "storage": "1TB SSD",
@@ -282,6 +367,11 @@
       "model": "RedmiBook Pro",
       "price": 54999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "ram": "16GB",
         "storage": "512GB SSD",

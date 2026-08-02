@@ -3,16 +3,15 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/ProductCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
-import productsData from "@/data/products.json";
-import categoriesData from "@/data/categories.json";
+import { getCategories, getProducts } from "@/lib/data";
 
-export default function Home() {
-  const featuredProducts = productsData.filter((p) => p.isFeatured).slice(0, 4);
-  const bestSellers = productsData.filter((p) => p.isBestSeller).slice(0, 4);
-  const categories = categoriesData.slice(0, 4);
+export default async function Home() {
+  const categories = await getCategories();
+  const featuredProducts = await getProducts("featured");
+  const bestSellers = await getProducts("bestsellers");
 
   return (
-    <div className="flex flex-col gap-16 pb-16">
+    <div className="flex flex-col gap-16 pb-16 mt-15">
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-3xl bg-muted/40 px-6 py-24 sm:px-12 sm:py-32 lg:px-24">
         <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent pointer-events-none" />
@@ -53,8 +52,8 @@ export default function Home() {
             View all <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {categories.map((category) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          {categories.slice(0, 5).map((category) => (
             <CategoryCard key={category.id} category={category} />
           ))}
         </div>
@@ -73,7 +72,7 @@ export default function Home() {
             View all <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -111,7 +110,7 @@ export default function Home() {
             View all <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {bestSellers.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -120,3 +119,4 @@ export default function Home() {
     </div>
   );
 }
+

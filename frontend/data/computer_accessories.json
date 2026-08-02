@@ -20,6 +20,11 @@
       "model": "MX Master 3S",
       "price": 9995,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Mouse",
         "dpi": "8000",
@@ -34,6 +39,11 @@
       "model": "MX Keys",
       "price": 10995,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Keyboard",
         "backlight": "Yes",
@@ -48,6 +58,11 @@
       "model": "Viper V3 Pro",
       "price": 13999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Gaming Mouse",
         "dpi": "35000",
@@ -62,6 +77,11 @@
       "model": "K55 RGB Pro",
       "price": 5999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Membrane Keyboard",
         "backlight": "RGB",
@@ -75,6 +95,11 @@
       "model": "320M Wireless Mouse",
       "price": 1299,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Mouse",
         "dpi": "1600",
@@ -89,6 +114,11 @@
       "model": "KM7120W Combo",
       "price": 4499,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Keyboard+Mouse Combo",
         "connectivity": "Wireless/Bluetooth",
@@ -102,6 +132,11 @@
       "model": "ROG Falchion",
       "price": 11999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Mechanical Keyboard",
         "switches": "Cherry MX Red",
@@ -116,6 +151,11 @@
       "model": "Professional Webcam",
       "price": 6999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Webcam",
         "resolution": "1080p",
@@ -130,6 +170,11 @@
       "model": "Vigor GK50 Elite",
       "price": 8999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Mechanical Keyboard",
         "switches": "Kailh Box White",

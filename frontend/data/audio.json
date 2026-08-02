@@ -25,6 +25,11 @@
       "model": "AirPods Pro 2",
       "price": 24900,
       "currency": "INR",
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "TWS Earbuds",
         "anc": "Yes",
@@ -39,6 +44,11 @@
       "model": "Galaxy Buds3 Pro",
       "price": 17999,
       "currency": "INR",
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "TWS Earbuds",
         "anc": "Yes",
@@ -59,7 +69,12 @@
         "battery": "30hr",
         "connectivity": "Bluetooth 5.2"
       },
-      "stock": 18
+      "stock": 18,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-004",
@@ -73,7 +88,12 @@
         "battery": "8hr + 24hr case",
         "connectivity": "Bluetooth 5.3"
       },
-      "stock": 22
+      "stock": 22,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-005",
@@ -87,7 +107,12 @@
         "battery": "12hr",
         "connectivity": "Bluetooth 5.1"
       },
-      "stock": 35
+      "stock": 35,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-006",
@@ -101,7 +126,12 @@
         "battery": "35hr",
         "connectivity": "Bluetooth 5.0"
       },
-      "stock": 45
+      "stock": 45,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-007",
@@ -115,7 +145,12 @@
         "battery": "24hr",
         "connectivity": "Bluetooth 5.3"
       },
-      "stock": 12
+      "stock": 12,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-008",
@@ -129,7 +164,12 @@
         "battery": "12hr",
         "connectivity": "Bluetooth 5.1"
       },
-      "stock": 20
+      "stock": 20,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-009",
@@ -142,7 +182,12 @@
         "battery": "100hr",
         "connectivity": "Bluetooth 5.3"
       },
-      "stock": 25
+      "stock": 25,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-010",
@@ -156,7 +201,12 @@
         "battery": "25hr",
         "connectivity": "Bluetooth 5.1"
       },
-      "stock": 18
+      "stock": 18,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-011",
@@ -170,7 +220,12 @@
         "battery": "40hr",
         "connectivity": "Bluetooth 5.2"
       },
-      "stock": 38
+      "stock": 38,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-012",
@@ -184,7 +239,12 @@
         "battery": "7hr + 20hr case",
         "connectivity": "Bluetooth 5.3"
       },
-      "stock": 16
+      "stock": 16,
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ]
     },
     {
       "id": "au-013",
@@ -192,6 +252,11 @@
       "model": "Buds Pro 3",
       "price": 13999,
       "currency": "INR",
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "TWS Earbuds",
         "anc": "Yes",
@@ -206,6 +271,11 @@
       "model": "Ear",
       "price": 7499,
       "currency": "INR",
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "TWS Earbuds",
         "anc": "Yes",
@@ -220,6 +290,11 @@
       "model": "Zone Vibe 100",
       "price": 6999,
       "currency": "INR",
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Headset",
         "mic": "Boom mic",
@@ -234,6 +309,11 @@
       "model": "BlackShark V2 Pro",
       "price": 16999,
       "currency": "INR",
+      "images": [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Gaming Headset",
         "mic": "Detachable mic",

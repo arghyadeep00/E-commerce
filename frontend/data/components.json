@@ -23,6 +23,11 @@
       "model": "Core i9-14900K",
       "price": 52990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "CPU",
         "cores": "24 (8P+16E)",
@@ -37,6 +42,11 @@
       "model": "Core i5-14600K",
       "price": 26990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "CPU",
         "cores": "14 (6P+8E)",
@@ -51,6 +61,11 @@
       "model": "Ryzen 9 7950X3D",
       "price": 54990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "CPU",
         "cores": "16",
@@ -65,6 +80,11 @@
       "model": "Ryzen 7 7800X3D",
       "price": 33990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "CPU",
         "cores": "8",
@@ -79,6 +99,11 @@
       "model": "GeForce RTX 4090",
       "price": 159990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "GPU",
         "vram": "24GB GDDR6X",
@@ -93,6 +118,11 @@
       "model": "GeForce RTX 4070 Super",
       "price": 62990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "GPU",
         "vram": "12GB GDDR6X",
@@ -107,6 +137,11 @@
       "model": "Vengeance RGB 32GB DDR5",
       "price": 11999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "RAM",
         "capacity": "32GB (2x16GB)",
@@ -121,6 +156,11 @@
       "model": "ROG Strix B650E-F",
       "price": 24990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Motherboard",
         "socket": "AM5",
@@ -135,6 +175,11 @@
       "model": "MPG A850G",
       "price": 13990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Power Supply",
         "wattage": "850W",
@@ -149,6 +194,11 @@
       "model": "Predator GM7 1TB",
       "price": 8990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "SSD",
         "capacity": "1TB",

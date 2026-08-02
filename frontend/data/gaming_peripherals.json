@@ -11,6 +11,11 @@
       "model": "G Pro X Superlight 2",
       "price": 14995,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Gaming Mouse",
         "dpi": "32000",
@@ -25,6 +30,11 @@
       "model": "DeathAdder V3 Pro",
       "price": 13999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Gaming Mouse",
         "dpi": "30000",
@@ -39,6 +49,11 @@
       "model": "BlackWidow V4 Pro",
       "price": 19999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Mechanical Keyboard",
         "switches": "Green Clicky",
@@ -53,6 +68,11 @@
       "model": "K70 Max",
       "price": 18999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Mechanical Keyboard",
         "switches": "Magnetic Hall Effect",
@@ -67,6 +87,11 @@
       "model": "Virtuoso Pro",
       "price": 16999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Gaming Headset",
         "mic": "Broadcast mic",
@@ -81,6 +106,11 @@
       "model": "ROG Chakram X",
       "price": 15999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wireless Gaming Mouse",
         "dpi": "36000",
@@ -95,6 +125,11 @@
       "model": "Clutch GM51",
       "price": 6999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Wired Gaming Mouse",
         "dpi": "26000",
@@ -108,6 +143,11 @@
       "model": "HyperX Alloy Origins",
       "price": 10999,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Mechanical Keyboard",
         "switches": "Red Linear",
@@ -122,6 +162,11 @@
       "model": "DualSense Edge",
       "price": 17990,
       "currency": "INR",
+      "images":[
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
       "specs": {
         "type": "Controller",
         "platform": "PS5",

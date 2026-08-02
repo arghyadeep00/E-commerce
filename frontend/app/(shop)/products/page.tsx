@@ -1,5 +1,4 @@
 import { ProductCard } from "@/components/product/ProductCard";
-import productsData from "@/data/products.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
@@ -16,14 +15,14 @@ export const metadata = {
 };
 
 export default function ProductsPage() {
-  const products = productsData;
+
 
   return (
     <div className="flex flex-col gap-8 pb-16">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b pb-6">
         <div>
           <h1 className="text-4xl font-extrabold tracking-tight mb-2">All Products</h1>
-          <p className="text-muted-foreground">Showing {products.length} results</p>
+    
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
@@ -62,7 +61,7 @@ export default function ProductsPage() {
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-center justify-between hover:text-foreground cursor-pointer">
                 <span>All Categories</span>
-                <span>({products.length})</span>
+       
               </li>
               <li className="flex items-center justify-between hover:text-foreground cursor-pointer">
                 <span>Electronics</span>
@@ -98,11 +97,7 @@ export default function ProductsPage() {
 
         {/* Product Grid */}
         <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          
           
           {/* Pagination */}
           <div className="mt-12 flex items-center justify-center gap-2">
