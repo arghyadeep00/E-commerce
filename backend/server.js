@@ -39,7 +39,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/brands", brandRoutes);
-app.use("/api/products", productRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/cart", cartRoute);
 app.use("/api/wishlist", wishlistRoutes);

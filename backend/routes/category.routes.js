@@ -1,5 +1,5 @@
 import {
-  getCategorys,
+  getCategories,
   getCategoryById,
   createCategory,
   updateCategory,
@@ -9,7 +9,7 @@ import {
 import express from 'express';
 const router = express.Router();
 
-router.get('/', getCategorys);
+router.get('/', getCategories);
 router.get('/:slug', getCategoryById);
 
 router.post('/', createCategory);

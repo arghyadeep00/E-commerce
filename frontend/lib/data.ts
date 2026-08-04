@@ -1,15 +1,8 @@
-import audioData from "../data/audio.js";
-import componentsData from "../data/components.js";
-import computerAccessoriesData from "../data/computer_accessories.js";
-import gamingPeripheralsData from "../data/gaming_peripherals.js";
-import laptopsData from "../data/laptops.js";
-import powerAccessoriesData from "../data/power_accessories.js";
-import smartphonesData from "../data/smartphones.js";
-import tvsDisplaysData from "../data/tvs_displays.js";
-import wearablesData from "../data/wearables.js";
+const API_URL = "http://localhost:5000/api";
 
 export interface JsonProduct {
   id: string;
+  name: string;
   brand: string;
   model: string;
   price: number;
@@ -19,79 +12,84 @@ export interface JsonProduct {
   specs: any;
   stock: number;
   image: string;
+  category: string;
+  isFeatured?: boolean;
+  isBestSeller?: boolean;
 }
 
 export interface JsonCategoryData {
   id: string;
   name: string;
-  brands: string[];
-  category: string;
-  products: JsonProduct[];
-  images?: string[];
-  image?: string;
+  slug: string;
+  image: string;
 }
 
-const allData: JsonCategoryData[] = [
-  audioData,
-  componentsData,
-  computerAccessoriesData,
-  gamingPeripheralsData,
-  laptopsData,
-  powerAccessoriesData,
-  smartphonesData,
-  tvsDisplaysData,
-  wearablesData,
-] as JsonCategoryData[];
-
-export async function getCategories() {
-  return allData.map((parsed) => ({
-    id: parsed.id,
-    name: parsed.name,
-    slug: parsed.id, // using id as slug
-    image: parsed.images?.[0] || parsed.products[0]?.images[0] || "placeholder.jpg",
-  }));
+// Helper to map MongoDB Product to Frontend format
+function mapProduct(p: any): JsonProduct {
+  return {
+    id: p.slug || p._id, // use slug as id for routing
+    name: p.name,
+    brand: p.brand?.name || "Unknown Brand",
+    model: p.model || "",
+    price: p.price,
+    compareAtPrice: p.compareAtPrice,
+    currency: p.currency || "USD",
+    images: p.images || [],
+    specs: p.specifications || {},
+    stock: p.stock || 0,
+    image: p.thumbnail || (p.images && p.images[0]) || "/placeholder.jpg",
+    category: p.category?.name || "Uncategorized",
+    isFeatured: p.isFeatured,
+    isBestSeller: p.isBestSeller,
+  };
 }
 
-export async function getProductById(id: string) {
-  for (const parsed of allData) {
-    const product = parsed.products.find((p) => p.id === id);
-    if (product) {
-      return {
-        ...product,
-        name: `${product.brand} ${product.model}`,
-        category: parsed.name,
-      };
-    }
-  }
-  return null;
-}
-
-export async function getProducts(filter?: "featured" | "bestsellers") {
-  let allProducts: any[] = [];
-
-  for (const parsed of allData) {
-    const products = parsed.products.map(p => ({
-      id: p.id,
-      name: `${p.brand} ${p.model}`,
-      price: p.price,
-      images: p.images,
-      category: parsed.name,
-      brand: p.brand,
-      specs: p.specs,
-      stock: p.stock,
-      isFeatured: Math.random() > 0.8, // Randomly feature some products
-      isBestSeller: Math.random() > 0.8,
+export async function getCategories(): Promise<JsonCategoryData[]> {
+  try {
+    const res = await fetch(`${API_URL}/categories`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch categories");
+    const data = await res.json();
+    return data.map((c: any) => ({
+      id: c._id,
+      name: c.name,
+      slug: c.slug,
+      image: c.image || "/placeholder.jpg"
     }));
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+export async function getProductById(id: string): Promise<JsonProduct | null> {
+  try {
+    // id here is the slug from the url params
+    const res = await fetch(`${API_URL}/products/${id}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch product");
+    const data = await res.json();
+    return mapProduct(data);
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+export async function getProducts(filter?: "featured" | "bestsellers"): Promise<JsonProduct[]> {
+  try {
+    let url = `${API_URL}/products`;
+    if (filter === "featured") url = `${API_URL}/products/featured`;
+    if (filter === "bestsellers") url = `${API_URL}/products/best-sellers`;
     
-    allProducts = [...allProducts, ...products];
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch products");
+    const data = await res.json();
+    
+    if (Array.isArray(data)) {
+      return data.map(mapProduct);
+    }
+    return [];
+  } catch (err) {
+    console.error(err);
+    return [];
   }
-  
-  if (filter === "featured") {
-    return allProducts.filter(p => p.isFeatured).slice(0, 8);
-  }
-  if (filter === "bestsellers") {
-    return allProducts.filter(p => p.isBestSeller).slice(0, 8);
-  }
-  
-  return allProducts;
 }
