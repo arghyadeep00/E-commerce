@@ -23,9 +23,9 @@ const router = express.Router();
 router.get("/", getProducts);
 router.get("/:slug", getProductById);
 
-router.post("/", createProduct);
-router.patch("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.post("/", protect, authorize("admin"), createProduct);
+router.patch("/:id", protect, authorize("admin"), updateProduct);
+router.delete("/:id", protect, authorize("admin"), deleteProduct);
 
 // product search and filter
 
