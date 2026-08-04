@@ -9,9 +9,9 @@ import {
   getMe,
   updateChangePassword
 } from '../controllers/auth.controller.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 import express from 'express';
-import { registerUser, authUser } from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.post('/reset-password', resetPasswordAuth);
 router.post('/refresh-token', refreshTokenAuth);
 router.post('/verify-email', verifyEmailAuth);
 
-router.get('/me', getMe);
-router.patch('/change-password', updateChangePassword);
+router.get('/me', protect, getMe);
+router.patch('/change-password', protect, updateChangePassword);
 
 export default router;
