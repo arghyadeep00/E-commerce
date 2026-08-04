@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const dns = require('dns');
+import mongoose from 'mongoose';
+import dns from 'dns';
 
 // Set the DNS server for MongoDB connection
 dns.setServers(['8.8.8.8']);
@@ -14,4 +14,4 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+export default connectDB;

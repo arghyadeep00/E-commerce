@@ -14,8 +14,11 @@ export const metadata = {
   description: "Browse our complete collection of premium products.",
 };
 
-export default function ProductsPage() {
+import { getProducts, getCategories } from "@/lib/data";
 
+export default async function ProductsPage() {
+  const products = await getProducts();
+  const categories = await getCategories();
 
   return (
     <div className="flex flex-col gap-8 pb-16">
@@ -59,26 +62,14 @@ export default function ProductsPage() {
           <div>
             <h3 className="font-semibold mb-4 text-lg">Categories</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center justify-between hover:text-foreground cursor-pointer">
+              <li className="flex items-center justify-between hover:text-foreground cursor-pointer font-medium text-primary">
                 <span>All Categories</span>
-       
               </li>
-              <li className="flex items-center justify-between hover:text-foreground cursor-pointer">
-                <span>Electronics</span>
-                <span>(1)</span>
-              </li>
-              <li className="flex items-center justify-between hover:text-foreground cursor-pointer">
-                <span>Wearables</span>
-                <span>(1)</span>
-              </li>
-              <li className="flex items-center justify-between hover:text-foreground cursor-pointer">
-                <span>Furniture</span>
-                <span>(1)</span>
-              </li>
-              <li className="flex items-center justify-between hover:text-foreground cursor-pointer">
-                <span>Computers</span>
-                <span>(1)</span>
-              </li>
+              {categories.map((category) => (
+                <li key={category.id} className="flex items-center justify-between hover:text-foreground cursor-pointer">
+                  <span>{category.name}</span>
+                </li>
+              ))}
             </ul>
           </div>
           
@@ -97,7 +88,11 @@ export default function ProductsPage() {
 
         {/* Product Grid */}
         <div className="flex-1">
-          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
           
           {/* Pagination */}
           <div className="mt-12 flex items-center justify-center gap-2">

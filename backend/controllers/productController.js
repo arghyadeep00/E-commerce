@@ -1,15 +1,16 @@
-const Product = require('../models/Product');
+import Product from '../models/Product.js';
+import asyncHandler from '../middleware/asyncHandler.js';
 
-const getProducts = async (req, res) => {
+const getProducts = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find({});
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+});
 
-const createProduct = async (req, res) => {
+const createProduct = asyncHandler(async (req, res) => {
   try {
     const { name, price, description, image, countInStock } = req.body;
     const product = new Product({
@@ -25,6 +26,6 @@ const createProduct = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+});
 
-module.exports = { getProducts, createProduct };
+export { getProducts, createProduct };

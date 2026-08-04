@@ -56,11 +56,14 @@ export function ProductCard({ product }: { product: Product }) {
         href={`/products/${product.id}`}
         className="block overflow-hidden bg-gray-100 aspect-square relative"
       >
-        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground bg-gray-100">
-          {/* Placeholder if no image */}
-          <span className="text-sm">Product Image</span>
-        </div>
-        {/* We would use Next.js Image here with actual source */}
+        {product.images && product.images.length > 0 ? (
+          <img src={product.images[0]} alt={product.name} className="object-cover w-full h-full" />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground bg-gray-100">
+            {/* Placeholder if no image */}
+            <span className="text-sm">Product Image</span>
+          </div>
+        )}
       </Link>
 
       <CardContent className="p-4">

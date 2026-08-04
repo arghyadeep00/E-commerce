@@ -1,5 +1,6 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+import User from '../models/User.js';
+import jwt from 'jsonwebtoken';
+import asyncHandler from '../middleware/asyncHandler.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -7,7 +8,7 @@ const generateToken = (id) => {
   });
 };
 
-const registerUser = async (req, res) => {
+const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
     const userExists = await User.findOne({ email });
@@ -36,9 +37,9 @@ const registerUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+});
 
-const authUser = async (req, res) => {
+const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -56,6 +57,6 @@ const authUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+});
 
-module.exports = { registerUser, authUser };
+export { registerUser, authUser };

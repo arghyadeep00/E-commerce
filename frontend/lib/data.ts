@@ -1,11 +1,19 @@
-import fs from "fs/promises";
-import path from "path";
+import audioData from "../data/audio.js";
+import componentsData from "../data/components.js";
+import computerAccessoriesData from "../data/computer_accessories.js";
+import gamingPeripheralsData from "../data/gaming_peripherals.js";
+import laptopsData from "../data/laptops.js";
+import powerAccessoriesData from "../data/power_accessories.js";
+import smartphonesData from "../data/smartphones.js";
+import tvsDisplaysData from "../data/tvs_displays.js";
+import wearablesData from "../data/wearables.js";
 
 export interface JsonProduct {
   id: string;
   brand: string;
   model: string;
   price: number;
+  compareAtPrice?: number;
   currency: string;
   images: string[];
   specs: any;
@@ -19,53 +27,63 @@ export interface JsonCategoryData {
   brands: string[];
   category: string;
   products: JsonProduct[];
+  images?: string[];
+  image?: string;
 }
 
-export async function getCategories() {
-  const dataDir = path.join(process.cwd(), "data");
-  const files = await fs.readdir(dataDir);
-  const categories = [];
+const allData: JsonCategoryData[] = [
+  audioData,
+  componentsData,
+  computerAccessoriesData,
+  gamingPeripheralsData,
+  laptopsData,
+  powerAccessoriesData,
+  smartphonesData,
+  tvsDisplaysData,
+  wearablesData,
+] as JsonCategoryData[];
 
-  for (const file of files) {
-    if (file.endsWith(".json")) {
-      const filePath = path.join(dataDir, file);
-      const content = await fs.readFile(filePath, "utf-8");
-      const parsed: JsonCategoryData = JSON.parse(content);
-      categories.push({
-        id: parsed.id,
-        name: parsed.name,
-        slug: parsed.id, // using id as slug
-        image: parsed.products[0]?.images[0] || "placeholder.jpg",
-      });
+export async function getCategories() {
+  return allData.map((parsed) => ({
+    id: parsed.id,
+    name: parsed.name,
+    slug: parsed.id, // using id as slug
+    image: parsed.images?.[0] || parsed.products[0]?.images[0] || "placeholder.jpg",
+  }));
+}
+
+export async function getProductById(id: string) {
+  for (const parsed of allData) {
+    const product = parsed.products.find((p) => p.id === id);
+    if (product) {
+      return {
+        ...product,
+        name: `${product.brand} ${product.model}`,
+        category: parsed.name,
+      };
     }
   }
-  return categories;
+  return null;
 }
 
 export async function getProducts(filter?: "featured" | "bestsellers") {
-  const dataDir = path.join(process.cwd(), "data");
-  const files = await fs.readdir(dataDir);
   let allProducts: any[] = [];
 
-  for (const file of files) {
-    if (file.endsWith(".json")) {
-      const filePath = path.join(dataDir, file);
-      const content = await fs.readFile(filePath, "utf-8");
-      const parsed: JsonCategoryData = JSON.parse(content);
-      
-      const products = parsed.products.map(p => ({
-        id: p.id,
-        name: `${p.brand} ${p.model}`,
-        price: p.price,
-        images: p.images,
-        category: parsed.name,
-        brand: p.brand,
-        isFeatured: Math.random() > 0.8, // Randomly feature some products
-        isBestSeller: Math.random() > 0.8,
-      }));
-      
-      allProducts = [...allProducts, ...products];
-    }
+  for (const parsed of allData) {
+    const products = parsed.products.map(p => ({
+      id: p.id,
+      name: `${p.brand} ${p.model}`,
+      price: p.price,
+      images: p.images,
+      category: parsed.name,
+      brand: p.brand,
+      specs: p.specs,
+      stock: p.stock,
+      isFeatured: Math.random() > 0.8, // Randomly feature some products
+      isBestSeller: Math.random() > 0.8,
+    }));
+    
+    allProducts = [...allProducts, ...products];
   }
   
   if (filter === "featured") {

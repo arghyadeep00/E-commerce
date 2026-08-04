@@ -16,10 +16,13 @@ export function CategoryCard({ category }: { category: Category }) {
       <Card className="group overflow-hidden rounded-xl cursor-pointer border-none bg-muted/50 hover:bg-muted transition-colors">
         <CardContent className="p-0">
           <div className="aspect-4/3 bg-gray-200 relative overflow-hidden flex items-center justify-center">
-            {/* Placeholder for Next.js Image */}
-            <span className="text-muted-foreground font-medium">
-              {category.name}
-            </span>
+            {category.image && category.image !== "placeholder.jpg" ? (
+              <img src={category.image} alt={category.name} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" />
+            ) : (
+              <span className="text-muted-foreground font-medium">
+                {category.name}
+              </span>
+            )}
           </div>
           <div className="p-4 text-center">
             <h3 className="font-semibold group-hover:text-primary transition-colors">

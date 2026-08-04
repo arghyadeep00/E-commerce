@@ -1,0 +1,201 @@
+const componentsData = {
+  id: "components",
+  name: "PC Components",
+  category: "components",
+  images: [
+    "https://picsum.photos/400/400?random=1"
+  ],
+  products: [
+    {
+      id: "cp-001",
+      brand: "Intel",
+      model: "Core i9-14900K",
+      price: 52990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "CPU",
+        cores: "24 (8P+16E)",
+        baseClock: "3.2GHz",
+        socket: "LGA1700"
+      },
+      stock: 14
+    },
+    {
+      id: "cp-002",
+      brand: "Intel",
+      model: "Core i5-14600K",
+      price: 26990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "CPU",
+        cores: "14 (6P+8E)",
+        baseClock: "3.5GHz",
+        socket: "LGA1700"
+      },
+      stock: 25
+    },
+    {
+      id: "cp-003",
+      brand: "AMD",
+      model: "Ryzen 9 7950X3D",
+      price: 54990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "CPU",
+        cores: "16",
+        baseClock: "4.2GHz",
+        socket: "AM5"
+      },
+      stock: 10
+    },
+    {
+      id: "cp-004",
+      brand: "AMD",
+      model: "Ryzen 7 7800X3D",
+      price: 33990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "CPU",
+        cores: "8",
+        baseClock: "4.2GHz",
+        socket: "AM5"
+      },
+      stock: 18
+    },
+    {
+      id: "cp-005",
+      brand: "NVIDIA",
+      model: "GeForce RTX 4090",
+      price: 159990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "GPU",
+        vram: "24GB GDDR6X",
+        cudaCores: "16384",
+        tdp: "450W"
+      },
+      stock: 5
+    },
+    {
+      id: "cp-006",
+      brand: "NVIDIA",
+      model: "GeForce RTX 4070 Super",
+      price: 62990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "GPU",
+        vram: "12GB GDDR6X",
+        cudaCores: "7168",
+        tdp: "220W"
+      },
+      stock: 13
+    },
+    {
+      id: "cp-007",
+      brand: "Corsair",
+      model: "Vengeance RGB 32GB DDR5",
+      price: 11999,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "RAM",
+        capacity: "32GB (2x16GB)",
+        speed: "6000MHz",
+        cas: "CL36"
+      },
+      stock: 40
+    },
+    {
+      id: "cp-008",
+      brand: "ASUS",
+      model: "ROG Strix B650E-F",
+      price: 24990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "Motherboard",
+        socket: "AM5",
+        chipset: "B650E",
+        formFactor: "ATX"
+      },
+      stock: 16
+    },
+    {
+      id: "cp-009",
+      brand: "MSI",
+      model: "MPG A850G",
+      price: 13990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "Power Supply",
+        wattage: "850W",
+        efficiency: "80+ Gold",
+        modular: "Full"
+      },
+      stock: 20
+    },
+    {
+      id: "cp-010",
+      brand: "Acer",
+      model: "Predator GM7 1TB",
+      price: 8990,
+      currency: "INR",
+      images: [
+        "https://picsum.photos/679/679?random=1",
+        "https://picsum.photos/679/679?random=2",
+        "https://picsum.photos/679/679?random=3"
+      ],
+      specs: {
+        type: "SSD",
+        capacity: "1TB",
+        interface: "NVMe PCIe 4.0",
+        readSpeed: "7000MB/s"
+      },
+      stock: 30
+    }
+  ]
+}
+export default componentsData;

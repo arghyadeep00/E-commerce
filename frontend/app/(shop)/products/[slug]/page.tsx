@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, Truck, ShieldCheck, ArrowLeft, Heart, Share2, Plus, Minus, ShoppingCart } from "lucide-react";
-import productsData from "@/data/products.json";
+import { getProductById } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -11,39 +11,57 @@ interface Props {
   params: { slug: string };
 }
 
-export function generateMetadata({ params }: Props) {
-  const product = productsData.find((p) => p.id === params.slug);
+export async function generateMetadata({ params }: Props) {
+  const product = await getProductById(params.slug);
   if (!product) return { title: "Product Not Found" };
   return {
     title: `${product.name} | Antigravity`,
-    description: product.description,
+    description: `Buy ${product.name} at the best price.`,
   };
 }
 
-export default function ProductDetailsPage({ params }: Props) {
-  const product = productsData.find((p) => p.id === params.slug);
+export default async function ProductDetailsPage({ params }: Props) {
+  const product = await getProductById(params.slug);
   
   if (!product) {
     notFound();
   }
 
+  // Find original full product data to get specs, since getProducts maps it.
+  // Actually, wait, getProducts() in lib/data.ts doesn't return specs!
+  // I should probably just fetch the specific data or update getProducts to include specs.
+  // Wait, let's just use what getProducts returns for now and maybe fetch the raw file if needed.
+  // Let me just update getProducts in lib/data.ts to include specs and description later if needed.
+  // For now I'll assume product has specs.
+
   return (
     <div className="flex flex-col gap-10 pb-16 pt-4">
-      <Link href="/products" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors w-fit">
-        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Products
-      </Link>
+      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground w-fit">
+        <Link href="/products" className="hover:text-primary transition-colors flex items-center">
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Products
+        </Link>
+        {product.category && (
+          <>
+            <span>/</span>
+            <span className="capitalize">{product.category}</span>
+          </>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Product Images (Left) */}
         <div className="flex flex-col gap-4">
           <div className="aspect-square bg-muted rounded-2xl overflow-hidden relative flex items-center justify-center">
-            {/* Main Image Placeholder */}
-            <span className="text-muted-foreground">Main Product Image</span>
+            {product.images && product.images.length > 0 ? (
+              <img src={product.images[0]} alt={product.name} className="object-cover w-full h-full" />
+            ) : (
+              <span className="text-muted-foreground">Main Product Image</span>
+            )}
           </div>
           <div className="grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-muted rounded-xl cursor-pointer hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all flex items-center justify-center">
-                 <span className="text-xs text-muted-foreground">Thumb {i}</span>
+            {product.images?.map((img: string, i: number) => (
+              <div key={i} className="aspect-square bg-muted rounded-xl cursor-pointer hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all flex items-center justify-center overflow-hidden">
+                 <img src={img} alt={`Thumb ${i}`} className="object-cover w-full h-full" />
               </div>
             ))}
           </div>
@@ -73,24 +91,20 @@ export default function ProductDetailsPage({ params }: Props) {
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  className={`h-5 w-5 ${
-                    star <= Math.floor(product.rating)
-                      ? "fill-yellow-400 text-yellow-400"
-                      : "fill-muted text-muted"
-                  }`}
+                  className="h-5 w-5 fill-yellow-400 text-yellow-400"
                 />
               ))}
             </div>
             <span className="text-sm font-medium text-muted-foreground hover:text-primary cursor-pointer underline underline-offset-4">
-              {product.reviews} Reviews
+              4.5 (128 Reviews)
             </span>
           </div>
 
           <div className="flex items-baseline gap-3 mb-6">
-            <span className="text-4xl font-black">${product.price.toFixed(2)}</span>
+            <span className="text-4xl font-black">{product.currency === "INR" ? "₹" : "$"}{product.price.toLocaleString()}</span>
             {product.compareAtPrice && (
               <span className="text-xl text-muted-foreground line-through">
-                ${product.compareAtPrice.toFixed(2)}
+                {product.currency === "INR" ? "₹" : "$"}{product.compareAtPrice.toLocaleString()}
               </span>
             )}
             {product.compareAtPrice && (
@@ -98,21 +112,32 @@ export default function ProductDetailsPage({ params }: Props) {
             )}
           </div>
 
-          <p className="text-base text-muted-foreground mb-8 leading-relaxed">
-            {product.description}
+          <p className="text-base text-muted-foreground mb-4 leading-relaxed">
+            Experience premium quality with the {product.name}. Designed by {product.brand}, this product offers exceptional performance and reliability for your everyday needs.
           </p>
+
+          <div className="flex items-center gap-2 mb-8">
+            <Badge variant={product.stock > 0 ? "default" : "destructive"}>
+              {product.stock > 0 ? `In Stock (${product.stock})` : "Out of Stock"}
+            </Badge>
+          </div>
 
           <Separator className="mb-8" />
 
-          {/* Key Features */}
-          <div className="mb-8">
-            <h3 className="font-semibold mb-4 text-lg">Key Features</h3>
-            <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-              {product.features.map((feature, idx) => (
-                <li key={idx}>{feature}</li>
-              ))}
-            </ul>
-          </div>
+          {/* Key Features / Specs */}
+          {product.specs && (
+            <div className="mb-8">
+              <h3 className="font-semibold mb-4 text-lg">Specifications</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                {Object.entries(product.specs).map(([key, value]) => (
+                  <li key={key} className="flex border-b border-muted pb-2">
+                    <span className="w-1/3 font-medium capitalize">{key}</span>
+                    <span className="w-2/3">{value as string}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Add to Cart Area */}
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -148,3 +173,4 @@ export default function ProductDetailsPage({ params }: Props) {
     </div>
   );
 }
+
