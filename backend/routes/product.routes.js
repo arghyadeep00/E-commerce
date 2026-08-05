@@ -13,6 +13,7 @@ import {
   getRelated,
   getCategory,
   getBrand,
+  getReview,
 } from "../controllers/product.controller.js";
 
 import express from "express";
@@ -34,6 +35,7 @@ router.get("/featured", getFeatured);
 router.get("/new-arrivals", getNewArrivals);
 router.get("/best-sellers", getBestSellers);
 router.get("/flash-sale", getFlashSale);
+router.get("/review/:productId", getReview);
 router.get("/related/:id", getRelated);
 router.get("/category/:slug", getCategory);
 router.get("/brand/:slug", getBrand);

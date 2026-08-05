@@ -33,13 +33,6 @@ const productSchema = new mongoose.Schema(
         images: [{ type: String }],
       },
     ],
-    reviews: [
-      {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        rating: { type: Number },
-        comment: { type: String },
-      },
-    ],
     shippingCharge: { type: Number, default: 0 },
     warranty: { type: String },
     status: {
@@ -53,5 +46,7 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+
 
 export default mongoose.model("Product", productSchema);

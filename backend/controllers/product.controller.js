@@ -3,9 +3,9 @@ import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 import Brand from "../models/Brand.js";
 import User from "../models/User.js";
+import Review from "../models/Review.js";
 
 export const getProducts = asyncHandler(async (req, res) => {
-  
   const products = await Product.find({}).populate("category brand");
   res.status(200).json(products);
 });
@@ -15,7 +15,7 @@ export const getProductById = asyncHandler(async (req, res) => {
     "category brand reviews.user",
   );
   if (!product) {
-    res.status(404);  
+    res.status(404);
     throw new Error("Product not found");
   }
   res.status(200).json(product);
@@ -64,17 +64,23 @@ export const getFilter = asyncHandler(async (req, res) => {
 });
 
 export const getFeatured = asyncHandler(async (req, res) => {
-  const products = await Product.find({ isFeatured: true }).populate('category brand').limit(8);
+  const products = await Product.find({ isFeatured: true })
+    .populate("category brand")
+    .limit(8);
   res.status(200).json(products);
 });
 
 export const getNewArrivals = asyncHandler(async (req, res) => {
-  const products = await Product.find({ isNewArrival: true }).populate('category brand').limit(8);
+  const products = await Product.find({ isNewArrival: true })
+    .populate("category brand")
+    .limit(8);
   res.status(200).json(products);
 });
 
 export const getBestSellers = asyncHandler(async (req, res) => {
-  const products = await Product.find({ isBestSeller: true }).populate('category brand').limit(8);
+  const products = await Product.find({ isBestSeller: true })
+    .populate("category brand")
+    .limit(8);
   res.status(200).json(products);
 });
 
@@ -92,4 +98,11 @@ export const getCategory = asyncHandler(async (req, res) => {
 
 export const getBrand = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Not implemented yet" });
+});
+
+export const getReview = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const reviews = await Review.find({ product: productId })
+    .populate("user", "name avatar");
+  return res.status(200).json(reviews);
 });

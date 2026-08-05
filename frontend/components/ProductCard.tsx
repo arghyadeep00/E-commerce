@@ -30,14 +30,16 @@ export default function ProductCard({ product }: { product: ProductProps }) {
   const dispatch = useAppDispatch();
 
   const handleAddToCart = () => {
-    dispatch(addToCart({
-      _id: product._id,
-      name: product.name,
-      image: product.thumbnail,
-      price: product.discountPrice || product.price,
-      countInStock: 10, 
-      qty: 1
-    }));
+    dispatch(
+      addToCart({
+        _id: product._id,
+        name: product.name,
+        image: product.thumbnail,
+        price: product.discountPrice || product.price,
+        countInStock: 10,
+        qty: 1,
+      }),
+    );
   };
 
   return (
@@ -48,7 +50,10 @@ export default function ProductCard({ product }: { product: ProductProps }) {
             <AspectRatio ratio={1}>
               {/* Using a standard img for now. In Next.js, next/image is preferred but requires domain config */}
               <img
-                src={product.thumbnail || "https://placehold.co/400x400/png?text=Product"}
+                src={
+                  product.thumbnail ||
+                  "https://placehold.co/400x400/png?text=Product"
+                }
                 alt={product.name}
                 className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
               />
@@ -94,13 +99,23 @@ export default function ProductCard({ product }: { product: ProductProps }) {
           <span className="text-lg font-bold">${product.price.toFixed(2)}</span>
           {product.discountPrice && (
             <span className="text-sm text-muted-foreground line-through">
-              ${product.discountPrice.toFixed(2)}
+              {product.discountPrice.toFixed(2)}
             </span>
           )}
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <Button 
+      <CardFooter className="p-4 pt-3 flex flex-col gap-3">
+        <Button
+          className="w-full gap-2 transition-transform active:scale-95"
+          onClick={(e) => {
+            e.preventDefault(); // Prevent navigating to product details if inside a Link
+            handleAddToCart();
+          }}
+        >
+          <ShoppingCart className="h-4 w-4" /> Buy Now
+        </Button>
+        <Button
+          variant="outline"
           className="w-full gap-2 transition-transform active:scale-95"
           onClick={(e) => {
             e.preventDefault(); // Prevent navigating to product details if inside a Link
