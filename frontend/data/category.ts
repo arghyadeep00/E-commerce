@@ -8,3 +8,11 @@ export const getCategory = async () => {
     throw error;
   }
 };
+export const getCategoryBySlug = async (slug: String) => {
+  try {
+    const response = await api.get(`/categories/${slug}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

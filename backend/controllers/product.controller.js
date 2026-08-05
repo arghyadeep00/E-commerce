@@ -93,7 +93,22 @@ export const getRelated = asyncHandler(async (req, res) => {
 });
 
 export const getCategory = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Not implemented yet" });
+  const { slug } = req.params;
+  const category = await Category.findOne({ slug });
+  
+  if (!category) {
+    res.status(404);
+    throw new Error("Category not found");
+  }
+
+  const products = await Product.find({ category: category._id })
+    .populate("category brand")
+    .sort({ createdAt: -1 });
+
+  res.status(200).json({
+    category,
+    products,
+  });
 });
 
 export const getBrand = asyncHandler(async (req, res) => {

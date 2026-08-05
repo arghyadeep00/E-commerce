@@ -25,8 +25,8 @@ export default function ProductsPage() {
           name: `Premium Product ${i + 1}`,
           price: 49.99 + i * 15,
           rating: 3.5 + Math.random() * 1.5,
-          numReviews: Math.floor(Math.random() * 200),
-          image: `https://placehold.co/400x400/png?text=Product+${i+1}`,
+          reviewCount: Math.floor(Math.random() * 200),
+          thumbnail: `https://placehold.co/400x400/png?text=Product+${i+1}`,
         }));
         setProducts(mock);
       } finally {

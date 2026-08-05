@@ -17,3 +17,12 @@ export const getNewArrivedProducts = async () => {
     throw error;
   }
 };
+
+export const getProductsByCategory = async (slug: string) => {
+  try {
+    const response = await api.get(`/products/category/${slug}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
