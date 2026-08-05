@@ -36,11 +36,11 @@ export default async function CategoryPage({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-r from-primary/20 to-primary/10" />
+          <div className="w-full h-full bg-linear-to-r from-primary/20 to-primary/10" />
         )}
         
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-background/90 via-background/40 to-transparent" />
         
         {/* Header Content */}
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-12">

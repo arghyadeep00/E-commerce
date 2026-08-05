@@ -14,6 +14,7 @@ import {
   getCategory,
   getBrand,
   getReview,
+  getProductBySlug
 } from "../controllers/product.controller.js";
 
 import express from "express";
@@ -39,7 +40,7 @@ router.get("/review/:productId", getReview);
 router.get("/related/:id", getRelated);
 router.get("/category/:slug", getCategory);
 router.get("/brand/:slug", getBrand);
-
-router.get("/:slug", getProductById);
+router.get('/:id',getProductById);
+router.get("/:slug", getProductBySlug);
 
 export default router;
