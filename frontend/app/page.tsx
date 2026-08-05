@@ -1,11 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import api from "@/lib/api";
 import ProductCard, { ProductProps } from "@/components/ProductCard";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ArrowRight, Loader2, TrendingUp, Zap } from "lucide-react";
+import { ArrowRight, TrendingUp, Zap } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -13,48 +10,53 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { getFeaturedProducts, getNewArrivedProducts } from "@/data/product";
 
-export default function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState<ProductProps[]>([]);
-  const [newArrivals, setNewArrivals] = useState<ProductProps[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function Home() {
+  let featuredProducts: ProductProps[] = [];
+  let newArrivals: ProductProps[] = [];
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        // Fetch products from backend. Assuming /products returns an array or object with products
-        const { data } = await api.get("/products");
-        const products = Array.isArray(data) ? data : data.products || [];
-        
-        // Mock sorting for demo purposes if backend doesn't support it directly
-        setFeaturedProducts(products.slice(0, 4));
-        setNewArrivals(products.slice(4, 8).map((p: any) => ({ ...p, isNew: true })));
-      } catch (error) {
-        console.error("Failed to fetch products", error);
-        // Fallback placeholder data if backend fails
-        const mock: ProductProps[] = Array.from({ length: 8 }).map((_, i) => ({
-          _id: `prod-${i}`,
-          name: `Premium Product ${i + 1}`,
-          price: 99.99 + i * 10,
-          rating: 4 + Math.random(),
-          numReviews: Math.floor(Math.random() * 100),
-          image: `https://placehold.co/400x400/png?text=Product+${i+1}`,
-          isNew: i > 3
-        }));
-        setFeaturedProducts(mock.slice(0, 4));
-        setNewArrivals(mock.slice(4, 8));
-      } finally {
-        setLoading(false);
-      }
-    };
+  try {
+    const [featuredResponse, newArrivedResponse] = await Promise.all([
+      getFeaturedProducts(),
+      getNewArrivedProducts(),
+    ] as const);
 
-    fetchProducts();
-  }, []);
+    const featured = Array.isArray(featuredResponse)
+      ? featuredResponse
+      : featuredResponse?.products || [];
+
+    const newArrivedproducts = Array.isArray(newArrivedResponse)
+      ? newArrivedResponse
+      : newArrivedResponse?.products || [];
+
+    featuredProducts = featured;
+    newArrivals = newArrivedproducts;
+  } catch (error) {
+    console.error("Failed to fetch products for home page:", error);
+    // Provide fallback mock data so the page isn't empty if the backend is down
+    
+  }
 
   const banners = [
-    { id: 1, title: "Summer Collection", desc: "Up to 50% off on all summer wear.", bg: "bg-gradient-to-r from-cyan-500 to-blue-500" },
-    { id: 2, title: "New Electronics", desc: "Upgrade your tech today.", bg: "bg-gradient-to-r from-purple-500 to-pink-500" },
-    { id: 3, title: "Home Essentials", desc: "Make your house a home.", bg: "bg-gradient-to-r from-orange-400 to-rose-400" },
+    {
+      id: 1,
+      title: "Summer Collection",
+      desc: "Up to 50% off on all summer wear.",
+      bg: "bg-gradient-to-r from-cyan-500 to-blue-500",
+    },
+    {
+      id: 2,
+      title: "New Electronics",
+      desc: "Upgrade your tech today.",
+      bg: "bg-gradient-to-r from-purple-500 to-pink-500",
+    },
+    {
+      id: 3,
+      title: "Home Essentials",
+      desc: "Make your house a home.",
+      bg: "bg-gradient-to-r from-orange-400 to-rose-400",
+    },
   ];
 
   return (
@@ -66,10 +68,20 @@ export default function Home() {
             <CarouselContent>
               {banners.map((banner) => (
                 <CarouselItem key={banner.id}>
-                  <div className={`p-12 md:p-24 flex flex-col items-start justify-center h-75 md:h-100 ${banner.bg} text-white`}>
-                    <h2 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight">{banner.title}</h2>
-                    <p className="text-lg md:text-xl mb-8 opacity-90 max-w-md">{banner.desc}</p>
-                    <Button variant="secondary" size="lg" className="rounded-full font-semibold">
+                  <div
+                    className={`p-12 md:p-24 flex flex-col items-start justify-center h-75 md:h-100 ${banner.bg} text-white`}
+                  >
+                    <h2 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight">
+                      {banner.title}
+                    </h2>
+                    <p className="text-lg md:text-xl mb-8 opacity-90 max-w-md">
+                      {banner.desc}
+                    </p>
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      className="rounded-full font-semibold"
+                    >
                       Shop Now <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>
@@ -90,20 +102,19 @@ export default function Home() {
           <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
             <Zap className="h-6 w-6 text-yellow-500" /> Featured Products
           </h2>
-          <Link href="/products" className={buttonVariants({ variant: "link" })}>
+          <Link
+            href="/products"
+            className={buttonVariants({ variant: "link" })}
+          >
             View All
           </Link>
         </div>
-        
-        {loading ? (
-          <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
-        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {featuredProducts.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </div>
       </section>
 
       {/* New Arrivals */}
@@ -114,16 +125,12 @@ export default function Home() {
               <TrendingUp className="h-6 w-6 text-green-500" /> New Arrivals
             </h2>
           </div>
-          
-          {loading ? (
-            <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {newArrivals.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {newArrivals.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
         </div>
       </section>
     </div>

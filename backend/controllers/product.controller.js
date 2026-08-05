@@ -69,7 +69,8 @@ export const getFeatured = asyncHandler(async (req, res) => {
 });
 
 export const getNewArrivals = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Not implemented yet" });
+  const products = await Product.find({ isNewArrival: true }).populate('category brand').limit(8);
+  res.status(200).json(products);
 });
 
 export const getBestSellers = asyncHandler(async (req, res) => {

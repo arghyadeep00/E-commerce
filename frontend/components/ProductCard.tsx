@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +20,7 @@ export interface ProductProps {
   name: string;
   price: number;
   discountPrice?: number;
-  image: string;
+  thumbnail: string;
   rating: number;
   numReviews: number;
   isNew?: boolean;
@@ -31,9 +33,9 @@ export default function ProductCard({ product }: { product: ProductProps }) {
     dispatch(addToCart({
       _id: product._id,
       name: product.name,
-      image: product.image,
+      image: product.thumbnail,
       price: product.discountPrice || product.price,
-      countInStock: 10, // Default for mock, should come from product prop ideally
+      countInStock: 10, 
       qty: 1
     }));
   };
@@ -46,7 +48,7 @@ export default function ProductCard({ product }: { product: ProductProps }) {
             <AspectRatio ratio={1}>
               {/* Using a standard img for now. In Next.js, next/image is preferred but requires domain config */}
               <img
-                src={product.image || "https://placehold.co/400x400/png?text=Product"}
+                src={product.thumbnail || "https://placehold.co/400x400/png?text=Product"}
                 alt={product.name}
                 className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
               />
