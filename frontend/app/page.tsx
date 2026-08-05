@@ -11,16 +11,26 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { getFeaturedProducts, getNewArrivedProducts } from "@/data/product";
-
+import { getCategory } from "@/data/category";
 export default async function Home() {
+  interface Categories {
+    _id: string;
+    name: string;
+    logo?: string;
+    image?: string;
+    description: string;
+  }
   let featuredProducts: ProductProps[] = [];
   let newArrivals: ProductProps[] = [];
+  let categoryData: Categories[] = [];
 
   try {
-    const [featuredResponse, newArrivedResponse] = await Promise.all([
-      getFeaturedProducts(),
-      getNewArrivedProducts(),
-    ] as const);
+    const [featuredResponse, newArrivedResponse, getCategoryData] =
+      await Promise.all([
+        getFeaturedProducts(),
+        getNewArrivedProducts(),
+        getCategory(),
+      ] as const);
 
     const featured = Array.isArray(featuredResponse)
       ? featuredResponse
@@ -32,10 +42,10 @@ export default async function Home() {
 
     featuredProducts = featured;
     newArrivals = newArrivedproducts;
+    categoryData = getCategoryData;
   } catch (error) {
     console.error("Failed to fetch products for home page:", error);
     // Provide fallback mock data so the page isn't empty if the backend is down
-    
   }
 
   const banners = [
@@ -93,6 +103,47 @@ export default async function Home() {
               <CarouselNext className="right-4" />
             </div>
           </Carousel>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="py-12 container mx-auto px-4 md:px-8">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-bold tracking-tight">
+            Shop by Category
+          </h2>
+          <Link
+            href="/categories"
+            className={buttonVariants({ variant: "link" })}
+          >
+            View All Categories
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {categoryData.slice(0, 10).map((category) => (
+            <Link
+              key={category._id}
+              href={`/category/${category.name.toLowerCase()}`}
+              className="group flex flex-col items-center justify-center p-6 border rounded-xl bg-card hover:bg-muted/50 transition-colors shadow-sm hover:shadow-md"
+            >
+              <div className="w-16 h-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                {/* Fallback icon or image */}
+                {category.image ? (
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-10 h-10 object-contain"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-primary/20" />
+                )}
+              </div>
+              <h3 className="font-semibold text-center text-sm">
+                {category.name}
+              </h3>
+            </Link>
+          ))}
         </div>
       </section>
 
