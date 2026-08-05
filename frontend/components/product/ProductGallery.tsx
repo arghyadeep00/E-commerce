@@ -1,1 +1,0 @@
-export function ProductGallery() { return <div>ProductGallery Component</div>; }

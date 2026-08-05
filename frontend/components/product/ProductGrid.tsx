@@ -1,1 +1,0 @@
-export function ProductGrid() { return <div>ProductGrid Component</div>; }

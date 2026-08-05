@@ -1,1 +1,0 @@
-export function ProductSpecs() { return <div>ProductSpecs Component</div>; }

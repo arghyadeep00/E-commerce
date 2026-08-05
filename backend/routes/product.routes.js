@@ -21,7 +21,6 @@ import { protect, authorize } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/", getProducts);
-router.get("/:slug", getProductById);
 
 router.post("/", protect, authorize("admin"), createProduct);
 router.patch("/:id", protect, authorize("admin"), updateProduct);
@@ -38,5 +37,7 @@ router.get("/flash-sale", getFlashSale);
 router.get("/related/:id", getRelated);
 router.get("/category/:slug", getCategory);
 router.get("/brand/:slug", getBrand);
+
+router.get("/:slug", getProductById);
 
 export default router;

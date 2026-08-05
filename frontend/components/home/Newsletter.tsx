@@ -1,1 +1,0 @@
-export function Newsletter() { return <div>Newsletter Component</div>; }

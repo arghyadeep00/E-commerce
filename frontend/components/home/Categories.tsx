@@ -1,1 +1,0 @@
-export function Categories() { return <div>Categories Component</div>; }

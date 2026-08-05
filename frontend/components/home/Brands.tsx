@@ -1,1 +1,0 @@
-export function Brands() { return <div>Brands Component</div>; }

@@ -1,0 +1,172 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import api from "@/lib/api";
+import { clearCartItems } from "@/lib/features/cart/cartSlice";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Loader2, CheckCircle } from "lucide-react";
+
+export default function PlaceOrderPage() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
+  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Calculate prices
+  const itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const shippingPrice = itemsPrice > 100 ? 0 : 10;
+  const taxPrice = 0.15 * itemsPrice;
+  const totalPrice = itemsPrice + shippingPrice + taxPrice;
+
+  useEffect(() => {
+    if (!cart.shippingAddress.address) {
+      router.push("/shipping");
+    } else if (!cart.paymentMethod) {
+      router.push("/payment");
+    }
+  }, [cart.shippingAddress, cart.paymentMethod, router]);
+
+  const placeOrderHandler = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await api.post("/orders", {
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      });
+      dispatch(clearCartItems());
+      router.push(`/order/${data._id}`); // Assumes you will build an order details page
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to place order. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (cart.cartItems.length === 0) {
+    return (
+      <div className="container mx-auto p-8 text-center mt-12">
+        <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
+        <Link href="/products" className={buttonVariants()}>
+          Go Shopping
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 md:px-8 py-8 md:py-12">
+      <h1 className="text-3xl font-bold mb-8">Place Order</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Order Details */}
+        <div className="lg:col-span-2 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">Shipping</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>
+                <strong>Address: </strong>
+                {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
+                {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">Payment Method</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>
+                <strong>Method: </strong>
+                {cart.paymentMethod}
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">Order Items</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {cart.cartItems.map((item, index) => (
+                <div key={index} className="flex items-center gap-4 border-b pb-4 last:border-0 last:pb-0">
+                  <img src={item.image} alt={item.name} className="w-16 h-16 object-contain rounded bg-muted/20" />
+                  <div className="flex-1">
+                    <Link href={`/product/${item._id}`} className="font-semibold hover:underline">
+                      {item.name}
+                    </Link>
+                  </div>
+                  <div className="font-medium text-muted-foreground">
+                    {item.qty} x ${item.price.toFixed(2)} = ${(item.qty * item.price).toFixed(2)}
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Order Summary */}
+        <div className="lg:col-span-1">
+          <Card className="sticky top-24 shadow-lg border-primary/20">
+            <CardHeader className="bg-primary/5 pb-4 border-b">
+              <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6 space-y-4">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Items:</span>
+                <span className="font-medium">${itemsPrice.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Shipping:</span>
+                <span className="font-medium">${shippingPrice.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Tax:</span>
+                <span className="font-medium">${taxPrice.toFixed(2)}</span>
+              </div>
+              <div className="border-t pt-4 flex justify-between items-center">
+                <span className="text-lg font-bold">Total:</span>
+                <span className="text-2xl font-extrabold">${totalPrice.toFixed(2)}</span>
+              </div>
+              {error && (
+                <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md mt-4">
+                  {error}
+                </div>
+              )}
+            </CardContent>
+            <CardFooter className="bg-primary/5 border-t pt-6">
+              <Button 
+                className="w-full text-lg h-12 gap-2" 
+                onClick={placeOrderHandler}
+                disabled={cart.cartItems.length === 0 || loading}
+              >
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <CheckCircle className="h-5 w-5" />}
+                Place Order
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
