@@ -128,3 +128,32 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .animate-marquee-right-to-lef {
+    animation: right-to-left-marquee 50s linear infinite;
+  }
+  .animate-marquee-left-to-right {
+    animation: left-to-right-marquee 50s linear infinite;
+  }
+  
+  .pause-animation {
+    animation-play-state: paused !important;
+  }
+  @keyframes right-to-left-marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes left-to-right-marquee {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+}

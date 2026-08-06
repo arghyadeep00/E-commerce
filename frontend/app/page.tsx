@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/carousel";
 import { getFeaturedProducts, getNewArrivedProducts } from "@/data/product";
 import { getCategory } from "@/data/category";
+import { getBrands } from "@/data/Brand";
 export default async function Home() {
   interface Categories {
     _id: string;
@@ -20,17 +21,27 @@ export default async function Home() {
     image?: string;
     description: string;
   }
+  interface Brands {
+    _id: string;
+    logo: string;
+  }
   let featuredProducts: ProductProps[] = [];
   let newArrivals: ProductProps[] = [];
   let categoryData: Categories[] = [];
+  let brands: Brands[] = [];
 
   try {
-    const [featuredResponse, newArrivedResponse, getCategoryData] =
-      await Promise.all([
-        getFeaturedProducts(),
-        getNewArrivedProducts(),
-        getCategory(),
-      ] as const);
+    const [
+      featuredResponse,
+      newArrivedResponse,
+      getCategoryData,
+      getBrandsdata,
+    ] = await Promise.all([
+      getFeaturedProducts(),
+      getNewArrivedProducts(),
+      getCategory(),
+      getBrands(),
+    ] as const);
 
     const featured = Array.isArray(featuredResponse)
       ? featuredResponse
@@ -42,7 +53,8 @@ export default async function Home() {
 
     featuredProducts = featured;
     newArrivals = newArrivedproducts;
-    categoryData = getCategoryData;
+    categoryData = Array.isArray(getCategoryData) ? getCategoryData : (getCategoryData?.categories || []);
+    brands = Array.isArray(getBrandsdata) ? getBrandsdata : (getBrandsdata?.brands || []);
   } catch (error) {
     console.error("Failed to fetch products for home page:", error);
     // Provide fallback mock data so the page isn't empty if the backend is down
@@ -120,30 +132,56 @@ export default async function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {categoryData.slice(0, 10).map((category) => (
-            <Link
-              key={category._id}
-              href={`/category/${category.name.toLowerCase()}`}
-              className="group flex flex-col items-center justify-center p-6 border rounded-xl bg-card hover:bg-muted/50 transition-colors shadow-sm hover:shadow-md"
-            >
-              <div className="w-16 h-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                {/* Fallback icon or image */}
-                {category.image ? (
+        <div className="relative overflow-hidden w-full group py-2">
+          <div className="flex animate-marquee-right-to-lef group-hover:paused gap-4 w-max">
+            {[...categoryData.slice(0, 10), ...categoryData.slice(0, 10)].map((category, index) => (
+              <Link
+                key={`${category._id}-${index}`}
+                href={`/category/${category.name.toLowerCase()}`}
+                className="group/link flex flex-col items-center justify-center p-6 border rounded-xl bg-card hover:bg-muted/50 transition-colors shadow-sm hover:shadow-md w-37.5 md:w-50 shrink-0"
+              >
+                <div className="w-16 h-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/link:scale-110 transition-transform">
+                  {/* Fallback icon or image */}
+                  {category.image ? (
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-10 h-10 object-contain"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-primary/20" />
+                  )}
+                </div>
+                <h3 className="font-semibold text-center text-sm">
+                  {category.name}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Brands Logos */}
+      <section className="py-12 container mx-auto px-4 md:px-8 border-y bg-muted/10 my-8">
+        <h2 className="text-xl md:text-2xl font-bold tracking-tight mb-8 text-center text-muted-foreground">
+          Trusted by Top Brands
+        </h2>
+        <div className="relative overflow-hidden w-full group py-4">
+          <div className="flex animate-marquee-left-to-right group-hover:paused gap-8 md:gap-16 w-max items-center pr-8 md:pr-16">
+            {brands.length > 0 ? (
+              [...brands, ...brands].map((brand, index) => (
+                <div key={`${brand._id}-${index}`} className="w-24 h-12 md:w-32 md:h-16 relative flex items-center justify-center  transition-all duration-300 shrink-0">
                   <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-10 h-10 object-contain"
+                    src={brand.logo}
+                    alt="Brand Logo"
+                    className="max-w-full max-h-full object-contain drop-shadow-sm"
                   />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-primary/20" />
-                )}
-              </div>
-              <h3 className="font-semibold text-center text-sm">
-                {category.name}
-              </h3>
-            </Link>
-          ))}
+                </div>
+              ))
+            ) : (
+              <p className="text-muted-foreground text-sm w-full text-center pr-0">No brands found.</p>
+            )}
+          </div>
         </div>
       </section>
 
