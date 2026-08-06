@@ -113,7 +113,7 @@ export default function ProductCard({ product }: { product: ProductProps }) {
         <Button
           className="w-full gap-2 transition-transform active:scale-95"
           onClick={(e) => {
-            e.preventDefault(); // Prevent navigating to product details if inside a Link
+            e.preventDefault();
             handleAddToCart();
           }}
         >
@@ -123,7 +123,7 @@ export default function ProductCard({ product }: { product: ProductProps }) {
           variant="outline"
           className="w-full gap-2 transition-transform active:scale-95"
           onClick={(e) => {
-            e.preventDefault(); // Prevent navigating to product details if inside a Link
+            e.preventDefault();
             handleAddToCart();
           }}
         >

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Star, ShoppingCart, Heart, ShieldCheck, Truck, RotateCcw } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Star, ShoppingCart, Heart, ShieldCheck, Truck, RotateCcw, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,43 +13,62 @@ export default function ProductClient({ product }: { product: any }) {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(product.thumbnail);
 
+
+  useEffect(() => {
+    setActiveImage(product.thumbnail);
+    setQuantity(1);
+  }, [product._id, product.thumbnail]);
+
   const images = product.images?.length > 0 ? product.images : [product.thumbnail];
+  const inStock = (product.stock || 0) > 0;
+  const atMax = quantity >= (product.stock || 0);
+  const discountPct =
+    product.compareAtPrice && product.compareAtPrice > product.price
+      ? Math.round(100 - (product.price / product.compareAtPrice) * 100)
+      : null;
 
   const handleAddToCart = () => {
     dispatch(
       addToCart({
         _id: product._id,
         name: product.name,
-        image: product.thumbnail, // mapped correctly to thumbnail
+        image: product.thumbnail,
         price: product.price,
-        countInStock: product.stock, // mapped to stock
+        countInStock: product.stock,
         qty: quantity,
       }),
     );
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className="grid grid-cols-1 items-center justify-items-center md:grid-cols-2 gap-10 lg:gap-16 xl:gap-20">
       {/* Image Gallery */}
-      <div className="flex flex-col gap-4">
-        <div className="rounded-2xl overflow-hidden border bg-muted/20 flex items-center justify-center p-8 aspect-square relative">
+      <div className="flex flex-col gap-3 w-full max-w-md mx-auto md:mx-0">
+        <div className="rounded-xl overflow-hidden border bg-muted/10 flex items-center justify-center aspect-square relative w-full">
+          {discountPct !== null && (
+            <Badge className="absolute top-3 left-3 z-10" variant="destructive">
+              -{discountPct}%
+            </Badge>
+          )}
           <img
             src={activeImage}
             alt={product.name}
-            className="w-full h-full object-contain rounded-lg shadow-sm"
+            className="w-full h-full object-contain p-4"
           />
         </div>
         {images.length > 1 && (
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="flex gap-3 overflow-x-auto pb-1">
             {images.map((img: string, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setActiveImage(img)}
-                className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 overflow-hidden bg-muted/20 ${
-                  activeImage === img ? "border-primary" : "border-transparent"
+                aria-label={`Show image ${idx + 1}`}
+                aria-current={activeImage === img}
+                className={`shrink-0 w-16 h-16 rounded-md border overflow-hidden bg-muted/10 transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
+                  activeImage === img ? "border-primary" : "border-transparent hover:border-muted-foreground/30"
                 }`}
               >
-                <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain p-1" />
+                <img src={img} alt="" className="w-full h-full object-contain p-1" />
               </button>
             ))}
           </div>
@@ -57,122 +76,135 @@ export default function ProductClient({ product }: { product: any }) {
       </div>
 
       {/* Product Info */}
-      <div className="flex flex-col">
-        <div className="mb-2 flex items-center gap-2">
-          {product.brand && (
-            <span className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">
-              {product.brand.name || "Brand"}
+      <div className="flex flex-col w-full max-w-2xl justify-center">
+        <div className="mb-2 flex items-center gap-2 text-sm">
+          {product.brand?.name && (
+            <span className="text-muted-foreground uppercase tracking-wide font-medium">
+              {product.brand.name}
             </span>
           )}
-          {product.category && <Badge variant="secondary">{product.category.name || "Category"}</Badge>}
+          {product.category?.name && <Badge variant="secondary">{product.category.name}</Badge>}
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{product.name}</h1>
 
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex items-center gap-1">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-3 leading-tight">
+          {product.name}
+        </h1>
+
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-0.5" role="img" aria-label={`${product.rating || 0} out of 5 stars`}>
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
                 className={`h-4 w-4 ${
                   i < Math.floor(product.rating || 0)
                     ? "fill-primary text-primary"
-                    : "text-muted-foreground/30"
+                    : "text-muted-foreground/25"
                 }`}
               />
             ))}
           </div>
-          <span className="text-sm font-medium underline cursor-pointer">
-            {product.reviewCount || 0} Reviews
-          </span>
+          <button className="text-sm font-medium underline underline-offset-2 text-muted-foreground hover:text-foreground">
+            {product.reviewCount || 0} reviews
+          </button>
         </div>
 
-        <div className="flex items-end gap-3 mb-6">
-          <div className="text-3xl font-extrabold">₹{product.price.toFixed(2)}</div>
-          {product.compareAtPrice && product.compareAtPrice > product.price && (
-            <div className="text-xl text-muted-foreground line-through mb-1">
+        <div className="flex items-baseline gap-2 mb-1">
+          <span className="text-3xl font-bold tabular-nums">₹{product.price.toFixed(2)}</span>
+          {discountPct !== null && (
+            <span className="text-lg text-muted-foreground line-through tabular-nums">
               ₹{product.compareAtPrice.toFixed(2)}
-            </div>
+            </span>
           )}
         </div>
-
-        <p className="text-muted-foreground mb-8 leading-relaxed line-clamp-3">
-          {product.description}
+        <p className="text-sm mb-6">
+          {inStock ? (
+            <span className="text-emerald-600 font-medium">
+              In stock — {product.stock} left
+            </span>
+          ) : (
+            <span className="text-destructive font-medium">Out of stock</span>
+          )}
         </p>
 
-        {/* Add to Cart Actions */}
-        <div className="flex flex-col space-y-4 mb-8">
-          <div className="flex items-center gap-4">
-            <span className="font-medium">Quantity:</span>
+        {/* Quantity + Actions */}
+        <div className="flex flex-col gap-3 mb-8">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium">Quantity</span>
             <div className="flex items-center border rounded-md">
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="h-9 w-9"
+                disabled={quantity <= 1}
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                aria-label="Decrease quantity"
               >
-                -
+                <Minus className="h-3.5 w-3.5" />
               </Button>
-              <span className="w-12 text-center font-medium">{quantity}</span>
+              <span className="w-10 text-center text-sm font-medium tabular-nums">{quantity}</span>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setQuantity(Math.min(product.stock || 0, quantity + 1))}
+                className="h-9 w-9"
+                disabled={atMax || !inStock}
+                onClick={() => setQuantity((q) => Math.min(product.stock || 0, q + 1))}
+                aria-label="Increase quantity"
               >
-                +
+                <Plus className="h-3.5 w-3.5" />
               </Button>
             </div>
-            <span className="text-sm text-muted-foreground">
-              {(product.stock || 0) > 0 ? (
-                `${product.stock} items in stock`
-              ) : (
-                <span className="text-destructive font-medium">Out of Stock</span>
-              )}
-            </span>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <Button
               size="lg"
-              className="flex-1 gap-2 text-lg"
-              disabled={(product.stock || 0) === 0}
+              className="flex-1 gap-2"
+              disabled={!inStock}
               onClick={handleAddToCart}
             >
-              <ShoppingCart className="h-5 w-5" /> Add to Cart
+              <ShoppingCart className="h-4 w-4" /> Add to cart
             </Button>
-            <Button size="lg" variant="outline" className="px-4">
-              <Heart className="h-5 w-5" />
+            <Button size="lg" variant="outline" className="px-4" aria-label="Save for later">
+              <Heart className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
-        {/* Trust Badges */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t pt-6 text-sm mb-8">
-          <div className="flex items-center gap-2">
-            <Truck className="h-5 w-5 text-muted-foreground" />
-            <span>Free Shipping</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <RotateCcw className="h-5 w-5 text-muted-foreground" />
-            <span>30-Day Returns</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-5 w-5 text-muted-foreground" />
-            <span>{product.warranty || "2 Year Warranty"}</span>
-          </div>
+        {/* Trust badges — only render what's actually true for this product */}
+        <div className="flex flex-wrap gap-x-6 gap-y-2 border-y py-4 text-sm text-muted-foreground mb-8">
+          {product.freeShipping !== false && (
+            <div className="flex items-center gap-2">
+              <Truck className="h-4 w-4" />
+              <span>Free shipping</span>
+            </div>
+          )}
+          {product.returnPolicyDays !== 0 && (
+            <div className="flex items-center gap-2">
+              <RotateCcw className="h-4 w-4" />
+              <span>{product.returnPolicyDays || 30}-day returns</span>
+            </div>
+          )}
+          {product.warranty && (
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4" />
+              <span>{product.warranty}</span>
+            </div>
+          )}
         </div>
 
-        {/* Additional Info Tabs */}
+        {/* Additional Info Tabs — description no longer duplicated below the fold */}
         <Tabs defaultValue="description" className="w-full">
           <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
             <TabsTrigger
               value="description"
-              className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 py-2"
+              className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 py-2 text-sm"
             >
               Description
             </TabsTrigger>
             {product.features?.length > 0 && (
               <TabsTrigger
                 value="features"
-                className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 py-2"
+                className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 py-2 text-sm"
               >
                 Features
               </TabsTrigger>
@@ -180,41 +212,40 @@ export default function ProductClient({ product }: { product: any }) {
             {product.specifications && Object.keys(product.specifications).length > 0 && (
               <TabsTrigger
                 value="specs"
-                className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 py-2"
+                className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 py-2 text-sm"
               >
                 Specifications
               </TabsTrigger>
             )}
           </TabsList>
-          
-          <TabsContent value="description" className="pt-4 text-muted-foreground leading-relaxed">
+
+          <TabsContent value="description" className="pt-4 text-sm text-muted-foreground leading-relaxed">
             {product.description}
           </TabsContent>
-          
+
           {product.features?.length > 0 && (
-            <TabsContent value="features" className="pt-4 text-muted-foreground">
-              <ul className="list-disc pl-5 space-y-2">
+            <TabsContent value="features" className="pt-4 text-sm text-muted-foreground">
+              <ul className="list-disc pl-5 space-y-1.5">
                 {product.features.map((feature: string, idx: number) => (
                   <li key={idx}>{feature}</li>
                 ))}
               </ul>
             </TabsContent>
           )}
-          
+
           {product.specifications && Object.keys(product.specifications).length > 0 && (
-            <TabsContent value="specs" className="pt-4 text-muted-foreground">
+            <TabsContent value="specs" className="pt-4 text-sm">
               <div className="border rounded-md divide-y">
                 {Object.entries(product.specifications).map(([key, value], idx) => (
-                  <div key={idx} className="flex grid grid-cols-3 p-3">
+                  <div key={idx} className="grid grid-cols-3 p-3">
                     <span className="font-medium text-foreground">{key}</span>
-                    <span className="col-span-2">{String(value)}</span>
+                    <span className="col-span-2 text-muted-foreground">{String(value)}</span>
                   </div>
                 ))}
               </div>
             </TabsContent>
           )}
         </Tabs>
-
       </div>
     </div>
   );
