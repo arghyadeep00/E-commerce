@@ -53,8 +53,12 @@ export default async function Home() {
 
     featuredProducts = featured;
     newArrivals = newArrivedproducts;
-    categoryData = Array.isArray(getCategoryData) ? getCategoryData : (getCategoryData?.categories || []);
-    brands = Array.isArray(getBrandsdata) ? getBrandsdata : (getBrandsdata?.brands || []);
+    categoryData = Array.isArray(getCategoryData)
+      ? getCategoryData
+      : getCategoryData?.categories || [];
+    brands = Array.isArray(getBrandsdata)
+      ? getBrandsdata
+      : getBrandsdata?.brands || [];
   } catch (error) {
     console.error("Failed to fetch products for home page:", error);
     // Provide fallback mock data so the page isn't empty if the backend is down
@@ -65,19 +69,19 @@ export default async function Home() {
       id: 1,
       title: "Summer Collection",
       desc: "Up to 50% off on all summer wear.",
-      bg: "bg-gradient-to-r from-cyan-500 to-blue-500",
+      bg: "https://rukminim2.flixcart.com/fk-p-flap/3140/700/image/9cc48dfdb94404b5.png?q=60",
     },
     {
       id: 2,
       title: "New Electronics",
       desc: "Upgrade your tech today.",
-      bg: "bg-gradient-to-r from-purple-500 to-pink-500",
+      bg: "https://rukminim2.flixcart.com/fk-p-flap/3140/700/image/9cc48dfdb94404b5.png?q=60",
     },
     {
       id: 3,
       title: "Home Essentials",
       desc: "Make your house a home.",
-      bg: "bg-gradient-to-r from-orange-400 to-rose-400",
+      bg: "https://rukminim2.flixcart.com/fk-p-flap/3140/700/image/9cc48dfdb94404b5.png?q=60",
     },
   ];
 
@@ -91,21 +95,31 @@ export default async function Home() {
               {banners.map((banner) => (
                 <CarouselItem key={banner.id}>
                   <div
-                    className={`p-12 md:p-24 flex flex-col items-start justify-center h-75 md:h-100 ${banner.bg} text-white`}
+                    className="p-12 md:p-24 flex flex-col items-start justify-center min-h-75 md:min-h-100 text-white relative rounded-xl overflow-hidden"
+                    style={{
+                      backgroundImage: `url(${banner.bg})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
                   >
-                    <h2 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight">
-                      {banner.title}
-                    </h2>
-                    <p className="text-lg md:text-xl mb-8 opacity-90 max-w-md">
-                      {banner.desc}
-                    </p>
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      className="rounded-full font-semibold"
-                    >
-                      Shop Now <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    {/* Overlay to ensure text readability */}
+                    <div className="absolute inset-0 bg-black/10 z-0 pointer-events-none" />
+
+                    <div className="relative z-10 w-full flex flex-col items-start">
+                      <h2 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight drop-shadow-lg">
+                        {banner.title}
+                      </h2>
+                      <p className="text-lg md:text-xl mb-8 opacity-95 max-w-md drop-shadow-md">
+                        {banner.desc}
+                      </p>
+                      <Button
+                        variant="default"
+                        size="lg"
+                        className="rounded-full font-semibold shadow-lg bg-white text-black hover:bg-gray-100"
+                      >
+                        Shop Now <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </CarouselItem>
               ))}
@@ -134,29 +148,31 @@ export default async function Home() {
 
         <div className="relative overflow-hidden w-full group py-2">
           <div className="flex animate-marquee-right-to-lef group-hover:paused gap-4 w-max">
-            {[...categoryData.slice(0, 10), ...categoryData.slice(0, 10)].map((category, index) => (
-              <Link
-                key={`${category._id}-${index}`}
-                href={`/category/${category.name.toLowerCase()}`}
-                className="group/link flex flex-col items-center justify-center p-6 border rounded-xl bg-card hover:bg-muted/50 transition-colors shadow-sm hover:shadow-md w-37.5 md:w-50 shrink-0"
-              >
-                <div className="w-16 h-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/link:scale-110 transition-transform">
-                  {/* Fallback icon or image */}
-                  {category.image ? (
-                    <img
-                      src={category.image}
-                      alt={category.name}
-                      className="w-10 h-10 object-contain"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-primary/20" />
-                  )}
-                </div>
-                <h3 className="font-semibold text-center text-sm">
-                  {category.name}
-                </h3>
-              </Link>
-            ))}
+            {[...categoryData.slice(0, 10), ...categoryData.slice(0, 10)].map(
+              (category, index) => (
+                <Link
+                  key={`${category._id}-${index}`}
+                  href={`/category/${category.name.toLowerCase()}`}
+                  className="group/link flex flex-col items-center justify-center p-6 border rounded-xl bg-card hover:bg-muted/50 transition-colors shadow-sm hover:shadow-md w-37.5 md:w-50 shrink-0"
+                >
+                  <div className="w-16 h-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/link:scale-110 transition-transform">
+                    {/* Fallback icon or image */}
+                    {category.image ? (
+                      <img
+                        src={category.image}
+                        alt={category.name}
+                        className="w-10 h-10 object-contain"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-primary/20" />
+                    )}
+                  </div>
+                  <h3 className="font-semibold text-center text-sm">
+                    {category.name}
+                  </h3>
+                </Link>
+              ),
+            )}
           </div>
         </div>
       </section>
@@ -170,7 +186,10 @@ export default async function Home() {
           <div className="flex animate-marquee-left-to-right group-hover:paused gap-8 md:gap-16 w-max items-center pr-8 md:pr-16">
             {brands.length > 0 ? (
               [...brands, ...brands].map((brand, index) => (
-                <div key={`${brand._id}-${index}`} className="w-24 h-12 md:w-32 md:h-16 relative flex items-center justify-center  transition-all duration-300 shrink-0">
+                <div
+                  key={`${brand._id}-${index}`}
+                  className="w-24 h-12 md:w-32 md:h-16 relative flex items-center justify-center  transition-all duration-300 shrink-0"
+                >
                   <img
                     src={brand.logo}
                     alt="Brand Logo"
@@ -179,7 +198,9 @@ export default async function Home() {
                 </div>
               ))
             ) : (
-              <p className="text-muted-foreground text-sm w-full text-center pr-0">No brands found.</p>
+              <p className="text-muted-foreground text-sm w-full text-center pr-0">
+                No brands found.
+              </p>
             )}
           </div>
         </div>

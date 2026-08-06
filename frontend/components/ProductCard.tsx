@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +30,31 @@ export interface ProductProps {
 
 export default function ProductCard({ product }: { product: ProductProps }) {
   const dispatch = useAppDispatch();
+  const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (cardRef.current) observer.unobserve(cardRef.current);
+        }
+      },
+      {
+        rootMargin: "50px",
+        threshold: 0.1,
+      }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) observer.unobserve(cardRef.current);
+    };
+  }, []);
 
   const handleAddToCart = () => {
     dispatch(
@@ -44,7 +70,10 @@ export default function ProductCard({ product }: { product: ProductProps }) {
   };
 
   return (
-    <Card className="group overflow-hidden border transition-all hover:shadow-md dark:hover:shadow-primary/10 flex flex-col p-0">
+    <Card 
+      ref={cardRef}
+      className={`group overflow-hidden border transition-all hover:shadow-md dark:hover:shadow-primary/10 flex flex-col p-0 ${isVisible ? 'animate-fade-in-down' : 'opacity-0'}`}
+    >
       <CardHeader className="p-0 relative">
         <Link href={`/product/${product._id}`}>
           <div className="overflow-hidden">
