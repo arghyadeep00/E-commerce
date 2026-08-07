@@ -72,91 +72,114 @@ export default function ProductCard({ product }: { product: ProductProps }) {
   return (
     <Card 
       ref={cardRef}
-      className={`group overflow-hidden border transition-all hover:shadow-md dark:hover:shadow-primary/10 flex flex-col p-0 ${isVisible ? 'animate-fade-in-down' : 'opacity-0'}`}
+      className={`group relative overflow-hidden border-border/50 bg-card transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 flex flex-col p-0 rounded-2xl ${isVisible ? 'animate-fade-in-down' : 'opacity-0'} hover:-translate-y-1`}
     >
-      <CardHeader className="p-0 relative">
+      <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      
+      <CardHeader className="p-0 relative bg-muted/20">
         <Link href={`/product/${product._id}`}>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden relative">
             <AspectRatio ratio={1}>
-              <img
-                src={
-                  product.thumbnail ||
-                  "https://placehold.co/400x400/png?text=Product"
-                }
-                alt={product.name}
-                className="object-contain w-full h-full rounded-3xl p-4 transition-transform duration-300 group-hover:scale-105"
-              />
+              <div className="w-full h-full p-6 flex items-center justify-center rounded-2xl">
+                <img
+                  src={
+                    product.thumbnail ||
+                    "https://placehold.co/400x400/png?text=Product"
+                  }
+                  alt={product.name}
+                  className="object-contain max-w-full max-h-full drop-shadow-md transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
             </AspectRatio>
+            {/* Dark overlay on hover for image */}
+            <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
         </Link>
+        
         {product.isNewArrival && (
-          <Badge className="absolute top-2 left-2 z-10" variant="default">
-            New
+          <Badge className="absolute top-3 left-3 z-10 px-2.5 py-0.5 font-semibold tracking-wide" variant="default">
+            NEW
           </Badge>
         )}
+        
         <Button
-          variant="ghost"
+          variant="secondary"
           size="icon"
-          className="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 bg-background/50 hover:bg-background/80 backdrop-blur-sm rounded-full"
+          className="absolute top-3 right-3 z-10 opacity-0 -translate-y-2 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-sm hover:text-red-500 hover:bg-white rounded-full bg-white/90 backdrop-blur-md text-gray-600"
         >
           <Heart className="h-4 w-4" />
           <span className="sr-only">Add to Wishlist</span>
         </Button>
       </CardHeader>
-      <CardContent className=" grow">
-        <div className="flex items-center gap-1 mb-2">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              className={`h-3 w-3 ${
-                i < Math.floor(product.rating || 0)
-                  ? "fill-primary text-primary"
-                  : "text-muted-foreground/30"
-              }`}
-            />
-          ))}
-          <span className="text-xs text-muted-foreground ml-1">
-            ({product.reviewCount || 0})
-          </span>
+      
+      <CardContent className="p-5 grow flex flex-col relative z-10 bg-card">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-0.5">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                className={`h-3.5 w-3.5 ${
+                  i < Math.floor(product.rating || 0)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "fill-muted text-muted"
+                }`}
+              />
+            ))}
+            <span className="text-xs font-medium text-muted-foreground ml-1.5">
+              ({product.reviewCount || 0})
+            </span>
+          </div>
+          
+          <Badge variant="outline" className="text-[10px] uppercase font-bold text-muted-foreground border-muted-foreground/20">
+            In Stock
+          </Badge>
         </div>
-        <CardTitle className="text-base font-bold line-clamp-1 mb-1">
-          <Link href={`/product/${product._id}`} className="hover:underline">
+        
+        <CardTitle className="text-lg font-bold leading-tight line-clamp-2 mb-2 group-hover:text-primary transition-colors duration-300">
+          <Link href={`/product/${product._id}`}>
             {product.name}
           </Link>
         </CardTitle>
+        
         {product.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+          <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
             {product.description}
           </p>
         )}
-        <div className="flex items-center gap-2 mt-auto">
-          <span className="text-xl font-extrabold text-primary">₹{product.price.toLocaleString('en-IN')}</span>
+        
+        <div className="mt-auto flex items-end gap-2 pt-4">
+          <span className="text-2xl font-black text-foreground tracking-tight">
+            ₹{product.price.toLocaleString('en-IN')}
+          </span>
           {product.compareAtPrice && product.compareAtPrice > product.price && (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-sm font-medium text-muted-foreground line-through mb-1">
               ₹{product.compareAtPrice.toLocaleString('en-IN')}
             </span>
           )}
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-3 flex flex-col gap-3">
-        <Button
-          className="w-full gap-2 transition-transform active:scale-95"
-          onClick={(e) => {
-            e.preventDefault();
-            handleAddToCart();
-          }}
-        >
-          <ShoppingCart className="h-4 w-4" /> Buy Now
-        </Button>
+      
+      <CardFooter className="p-4 flex gap-3 relative z-10 bg-card">
         <Button
           variant="outline"
-          className="w-full gap-2 transition-transform active:scale-95"
+          size="icon"
+          className="shrink-0 h-11 w-11 rounded-xl border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300 shadow-sm"
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddToCart();
+          }}
+          title="Add to Cart"
+        >
+          <ShoppingCart className="h-5 w-5" />
+        </Button>
+        <Button
+          className="w-[80%] h-11 rounded-xl font-bold tracking-wide shadow-md hover:shadow-primary/25 transition-all duration-300"
           onClick={(e) => {
             e.preventDefault();
             handleAddToCart();
           }}
         >
-          <ShoppingCart className="h-4 w-4" /> Add to Cart
+          Buy Now
         </Button>
       </CardFooter>
     </Card>
