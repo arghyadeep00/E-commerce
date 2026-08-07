@@ -139,7 +139,7 @@ export default async function Home() {
             Shop by Category
           </h2>
           <Link
-            href="/categories"
+            href="/category"
             className={buttonVariants({ variant: "link" })}
           >
             View All Categories
