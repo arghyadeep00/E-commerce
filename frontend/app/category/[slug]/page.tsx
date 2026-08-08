@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getProductsByCategory } from "@/data/product";
 import ProductCard, { ProductProps } from "@/components/ProductCard";
 import { ArrowRight, PackageX } from "lucide-react";
@@ -42,10 +43,11 @@ export default async function CategoryPage({
       <section className="relative overflow-hidden bg-muted">
         <div className="absolute inset-0">
           {categoryInfo?.banner ? (
-            <img
+            <Image
               src={categoryInfo.banner}
               alt={`${title} background`}
-              className="h-full w-full object-cover opacity-90"
+              fill
+              className="object-cover opacity-90"
             />
           ) : (
             <div className="h-full w-full bg-linear-to-r from-primary/10 via-background to-secondary/10" />
@@ -70,9 +72,11 @@ export default async function CategoryPage({
             <div className="space-y-6">
               <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white shadow-sm backdrop-blur">
                 {categoryInfo?.icon ? (
-                  <img
+                  <Image
                     src={categoryInfo.icon}
                     alt={`${title} icon`}
+                    width={36}
+                    height={36}
                     className="h-9 w-9 rounded-full object-cover"
                   />
                 ) : (

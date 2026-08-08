@@ -2,16 +2,34 @@
 
 import { useEffect, useState } from "react";
 import { Star, ShoppingCart, Heart, ShieldCheck, Truck, RotateCcw, Minus, Plus } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { addToCart } from "@/lib/features/cart/cartSlice";
+import { addToWishlist, removeFromWishlist } from "@/lib/features/wishlist/wishlistSlice";
 
 export default function ProductClient({ product }: { product: any }) {
   const dispatch = useAppDispatch();
+  const { items: wishlistItems } = useAppSelector((state) => state.wishlist);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(product.thumbnail);
+
+  const isWishlisted = wishlistItems?.some((item) => item._id === product._id);
+
+  const handleWishlist = () => {
+    if (!isAuthenticated) {
+      window.location.href = '/login?redirect=' + window.location.pathname;
+      return;
+    }
+    if (isWishlisted) {
+      dispatch(removeFromWishlist(product._id));
+    } else {
+      dispatch(addToWishlist(product._id));
+    }
+  };
 
 
   useEffect(() => {
@@ -50,9 +68,11 @@ export default function ProductClient({ product }: { product: any }) {
               -{discountPct}%
             </Badge>
           )}
-          <img
+          <Image
             src={activeImage}
             alt={product.name}
+            width={800}
+            height={800}
             className="w-full h-full object-contain p-4"
           />
         </div>
@@ -68,7 +88,7 @@ export default function ProductClient({ product }: { product: any }) {
                   activeImage === img ? "border-primary" : "border-transparent hover:border-muted-foreground/30"
                 }`}
               >
-                <img src={img} alt="" className="w-full h-full object-contain p-1" />
+                <Image src={img} alt="" width={64} height={64} className="w-full h-full object-contain p-1" />
               </button>
             ))}
           </div>
@@ -164,8 +184,8 @@ export default function ProductClient({ product }: { product: any }) {
             >
               <ShoppingCart className="h-4 w-4" /> Add to cart
             </Button>
-            <Button size="lg" variant="outline" className="px-4" aria-label="Save for later">
-              <Heart className="h-4 w-4" />
+            <Button size="lg" variant="outline" className={`px-4 ${isWishlisted ? 'text-red-500 border-red-500/20 bg-red-50 hover:bg-red-100 hover:text-red-600 dark:bg-red-500/10 dark:hover:bg-red-500/20' : ''}`} aria-label="Save for later" onClick={handleWishlist}>
+              <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
             </Button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { addToCart, removeFromCart } from "@/lib/features/cart/cartSlice";
@@ -55,9 +56,11 @@ export default function CartPage() {
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item) => (
               <Card key={item._id} className="flex flex-col sm:flex-row items-center p-4 gap-4">
-                <img
+                <Image
                   src={item.image}
                   alt={item.name}
+                  width={96}
+                  height={96}
                   className="w-24 h-24 object-contain rounded-md bg-muted/20"
                 />
                 <div className="flex-1 flex flex-col sm:flex-row items-center justify-between w-full gap-4">

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import api from "@/lib/api";
 import { clearCartItems } from "@/lib/features/cart/cartSlice";
@@ -110,7 +111,7 @@ export default function PlaceOrderPage() {
             <CardContent className="space-y-4">
               {cart.cartItems.map((item, index) => (
                 <div key={index} className="flex items-center gap-4 border-b pb-4 last:border-0 last:pb-0">
-                  <img src={item.image} alt={item.name} className="w-16 h-16 object-contain rounded bg-muted/20" />
+                  <Image src={item.image} alt={item.name} width={64} height={64} className="w-16 h-16 object-contain rounded bg-muted/20" />
                   <div className="flex-1">
                     <Link href={`/product/${item._id}`} className="font-semibold hover:underline">
                       {item.name}

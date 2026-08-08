@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getCategory } from "@/data/category";
 import { ArrowRight, Layers } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -48,9 +49,11 @@ export default async function CategoryPage() {
               >
                 <div className="aspect-4/3 bg-muted/50 overflow-hidden relative flex items-center justify-center p-6">
                   {category.image ? (
-                    <img
+                    <Image
                       src={category.image}
                       alt={category.name}
+                      width={400}
+                      height={300}
                       className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (

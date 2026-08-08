@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import api from "@/lib/api";
 import ProductCard, { ProductProps } from "@/components/ProductCard";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -158,9 +159,11 @@ export default async function Home() {
                   <div className="w-16 h-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/link:scale-110 transition-transform">
                     {/* Fallback icon or image */}
                     {category.image ? (
-                      <img
+                      <Image
                         src={category.image}
                         alt={category.name}
+                        width={40}
+                        height={40}
                         className="w-10 h-10 object-contain"
                       />
                     ) : (
@@ -190,9 +193,11 @@ export default async function Home() {
                   key={`${brand._id}-${index}`}
                   className="w-24 h-12 md:w-32 md:h-16 relative flex items-center justify-center  transition-all duration-300 shrink-0"
                 >
-                  <img
+                  <Image
                     src={brand.logo}
                     alt="Brand Logo"
+                    width={128}
+                    height={64}
                     className="max-w-full max-h-full object-contain drop-shadow-sm"
                   />
                 </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,8 +14,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { addToCart } from "@/lib/features/cart/cartSlice";
+import { addToWishlist, removeFromWishlist } from "@/lib/features/wishlist/wishlistSlice";
 
 export interface ProductProps {
   _id: string;
@@ -30,8 +32,26 @@ export interface ProductProps {
 
 export default function ProductCard({ product }: { product: ProductProps }) {
   const dispatch = useAppDispatch();
+  const { items: wishlistItems } = useAppSelector((state) => state.wishlist);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const isWishlisted = wishlistItems?.some((item) => item._id === product._id);
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      window.location.href = '/login?redirect=' + window.location.pathname;
+      return;
+    }
+    if (isWishlisted) {
+      dispatch(removeFromWishlist(product._id));
+    } else {
+      dispatch(addToWishlist(product._id));
+    }
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -81,12 +101,14 @@ export default function ProductCard({ product }: { product: ProductProps }) {
           <div className="overflow-hidden relative">
             <AspectRatio ratio={1}>
               <div className="w-full h-full p-6 flex items-center justify-center rounded-2xl">
-                <img
+                <Image
                   src={
                     product.thumbnail ||
                     "https://placehold.co/400x400/png?text=Product"
                   }
                   alt={product.name}
+                  width={400}
+                  height={400}
                   className="object-contain max-w-full max-h-full drop-shadow-md transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
@@ -105,10 +127,11 @@ export default function ProductCard({ product }: { product: ProductProps }) {
         <Button
           variant="secondary"
           size="icon"
-          className="absolute top-3 right-3 z-10 opacity-0 -translate-y-2 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-sm hover:text-red-500 hover:bg-white rounded-full bg-white/90 backdrop-blur-md text-gray-600"
+          className={`absolute top-3 right-3 z-10 -translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-sm hover:text-red-500 hover:bg-white rounded-full bg-white/90 backdrop-blur-md ${isWishlisted ? 'opacity-100 text-red-500' : 'opacity-0 text-gray-600 group-hover:opacity-100'}`}
+          onClick={handleWishlist}
         >
-          <Heart className="h-4 w-4" />
-          <span className="sr-only">Add to Wishlist</span>
+          <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
+          <span className="sr-only">{isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}</span>
         </Button>
       </CardHeader>
       

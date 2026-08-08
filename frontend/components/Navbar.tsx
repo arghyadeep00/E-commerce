@@ -4,12 +4,29 @@ import { usePathname } from "next/navigation";
 import { ShoppingCart, Search, User, Menu, Heart } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { Button, buttonVariants } from "./ui/button";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import { fetchWishlist, clearWishlist } from "@/lib/features/wishlist/wishlistSlice";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const wishlistItems = useAppSelector((state) => state.wishlist.items);
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchWishlist());
+    } else {
+      dispatch(clearWishlist());
+    }
+  }, [isAuthenticated, dispatch]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -45,9 +62,14 @@ export default function Navbar() {
 
           <Link
             href="/wishlist"
-            className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-full" })}
+            className={buttonVariants({ variant: "ghost", size: "icon", className: "relative rounded-full" })}
           >
             <Heart className="h-5 w-5" />
+            {mounted && isAuthenticated && wishlistItems && wishlistItems.length > 0 && (
+              <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {wishlistItems.length}
+              </span>
+            )}
             <span className="sr-only">Wishlist</span>
           </Link>
 
@@ -56,7 +78,7 @@ export default function Navbar() {
             className={buttonVariants({ variant: "ghost", size: "icon", className: "relative rounded-full" })}
           >
             <ShoppingCart className="h-5 w-5" />
-            {cartItems && cartItems.length > 0 && (
+            {mounted && cartItems && cartItems.length > 0 && (
               <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                 {cartItems.length}
               </span>
@@ -65,7 +87,7 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href={isAuthenticated ? "/profile" : "/login"}
+            href={!mounted || !isAuthenticated ? "/login" : "/profile"}
             className={buttonVariants({ variant: "ghost", size: "icon", className: "rounded-full" })}
           >
             <User className="h-5 w-5" />
