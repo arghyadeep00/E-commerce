@@ -6,7 +6,29 @@ import User from "../models/User.js";
 import Review from "../models/Review.js";
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).populate("category brand");
+  const { category, brand, minPrice, maxPrice, sort } = req.query;
+
+  let query = {};
+
+  if (category && category !== 'All') query.category = category;
+  if (brand && brand !== 'All') query.brand = brand;
+  
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+
+  let sortQuery = {};
+  if (sort === "price_asc") sortQuery.price = 1;
+  else if (sort === "price_desc") sortQuery.price = -1;
+  else if (sort === "rating") sortQuery.rating = -1;
+  else sortQuery.createdAt = -1; 
+
+  const products = await Product.find(query)
+    .populate("category brand")
+    .sort(sortQuery);
+
   res.status(200).json(products);
 });
 

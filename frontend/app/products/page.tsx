@@ -1,92 +1,235 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import api from "@/lib/api";
 import ProductCard, { ProductProps } from "@/components/ProductCard";
-import { Loader2, Filter } from "lucide-react";
+import { Loader2, Filter, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState<string>("All");
+  
+  // Filter Options (Data from backend)
+  const [categories, setCategories] = useState<{_id: string; name: string}[]>([]);
+  const [brands, setBrands] = useState<{_id: string; name: string}[]>([]);
+  
+  // Selected Filters
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedBrand, setSelectedBrand] = useState<string>("All");
+  const [minPrice, setMinPrice] = useState<string>("");
+  const [maxPrice, setMaxPrice] = useState<string>("");
+  const [sort, setSort] = useState<string>("newest");
+  
+  // Mobile sidebar toggle
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Fetch Categories & Brands on Mount
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchFilters = async () => {
       try {
-        const { data } = await api.get("/products");
-        const prods = Array.isArray(data) ? data : data.products || [];
-        setProducts(prods);
+        const [catRes, brandRes] = await Promise.all([
+          api.get("/categories"),
+          api.get("/brands")
+        ]);
+        setCategories(catRes.data);
+        setBrands(brandRes.data);
       } catch (error) {
-        console.error("Failed to fetch products", error);
-      } finally {
-        setLoading(false);
+        console.error("Failed to fetch filters", error);
       }
     };
-
-    fetchProducts();
+    fetchFilters();
   }, []);
 
-  const categories = ["All", "Electronics", "Clothing", "Home", "Sports"];
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (selectedCategory !== "All") params.append("category", selectedCategory);
+      if (selectedBrand !== "All") params.append("brand", selectedBrand);
+      if (minPrice) params.append("minPrice", minPrice);
+      if (maxPrice) params.append("maxPrice", maxPrice);
+      params.append("sort", sort);
+
+      const { data } = await api.get(`/products?${params.toString()}`);
+      const prods = Array.isArray(data) ? data : data.products || [];
+      setProducts(prods);
+    } catch (error) {
+      console.error("Failed to fetch products", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCategory, selectedBrand, minPrice, maxPrice, sort]);
+
+  // Initial fetch and fetch on sort change
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts, sort]);
+
+  const handleApplyFilters = () => {
+    fetchProducts();
+    setIsSidebarOpen(false); // close mobile sidebar if open
+  };
+
+  const handleResetFilters = () => {
+    setSelectedCategory("All");
+    setSelectedBrand("All");
+    setMinPrice("");
+    setMaxPrice("");
+    setSort("newest");
+  };
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-8">
-      <h1 className="text-3xl font-bold mb-8">All Products</h1>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">All Products</h1>
+          <p className="text-muted-foreground mt-2">Showing {products.length} products</p>
+        </div>
+        
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <Button 
+            variant="outline" 
+            className="md:hidden flex-1"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <SlidersHorizontal className="h-4 w-4 mr-2" /> Filters
+          </Button>
+          
+          <div className="flex items-center gap-2 flex-1 md:flex-initial">
+            <Label htmlFor="sort" className="whitespace-nowrap hidden md:inline-block">Sort by:</Label>
+            <div className="relative w-full md:w-[180px]">
+              <select 
+                id="sort"
+                value={sort} 
+                onChange={(e) => setSort(e.target.value)}
+                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
+              >
+                <option value="newest">Newest Arrivals</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-3 h-4 w-4 opacity-50 pointer-events-none" />
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar Filters */}
-        <div className="w-full md:w-1/4">
-          <div className="bg-card border rounded-lg p-6 sticky top-24">
-            <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-              <Filter className="h-5 w-5" /> Filters
-            </h3>
+        <div className={`w-full md:w-1/4 ${isSidebarOpen ? 'block' : 'hidden md:block'}`}>
+          <div className="bg-card border rounded-xl p-6 sticky top-24 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <Filter className="h-5 w-5" /> Filters
+              </h3>
+              <Button variant="ghost" size="sm" onClick={handleResetFilters} className="text-muted-foreground hover:text-foreground h-8 px-2">
+                Reset
+              </Button>
+            </div>
 
             <div className="mb-6">
-              <h4 className="font-medium text-sm text-muted-foreground mb-3">
-                Categories
-              </h4>
-              <ul className="space-y-2">
+              <h4 className="font-medium text-sm text-muted-foreground mb-3">Categories</h4>
+              <ul className="space-y-1 max-h-48 overflow-y-auto pr-2">
+                <li>
+                  <Button
+                    variant={selectedCategory === "All" ? "secondary" : "ghost"}
+                    className="w-full justify-start h-9"
+                    onClick={() => setSelectedCategory("All")}
+                  >
+                    All Categories
+                  </Button>
+                </li>
                 {categories.map((cat) => (
-                  <li key={cat}>
+                  <li key={cat._id}>
                     <Button
-                      variant={category === cat ? "secondary" : "ghost"}
-                      className="w-full justify-start"
-                      onClick={() => setCategory(cat)}
+                      variant={selectedCategory === cat._id ? "secondary" : "ghost"}
+                      className="w-full justify-start h-9"
+                      onClick={() => setSelectedCategory(cat._id)}
                     >
-                      {cat}
+                      {cat.name}
                     </Button>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <Button className="w-full">Apply Filters</Button>
+            <div className="mb-6">
+              <h4 className="font-medium text-sm text-muted-foreground mb-3">Brands</h4>
+              <ul className="space-y-1 max-h-48 overflow-y-auto pr-2">
+                <li>
+                  <Button
+                    variant={selectedBrand === "All" ? "secondary" : "ghost"}
+                    className="w-full justify-start h-9"
+                    onClick={() => setSelectedBrand("All")}
+                  >
+                    All Brands
+                  </Button>
+                </li>
+                {brands.map((brand) => (
+                  <li key={brand._id}>
+                    <Button
+                      variant={selectedBrand === brand._id ? "secondary" : "ghost"}
+                      className="w-full justify-start h-9"
+                      onClick={() => setSelectedBrand(brand._id)}
+                    >
+                      {brand.name}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="mb-8">
+              <h4 className="font-medium text-sm text-muted-foreground mb-3">Price Range</h4>
+              <div className="flex items-center gap-2">
+                <Input 
+                  type="number" 
+                  placeholder="Min" 
+                  value={minPrice} 
+                  onChange={(e) => setMinPrice(e.target.value)}
+                  className="h-9"
+                  min="0"
+                />
+                <span className="text-muted-foreground">-</span>
+                <Input 
+                  type="number" 
+                  placeholder="Max" 
+                  value={maxPrice} 
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                  className="h-9"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <Button className="w-full" onClick={handleApplyFilters}>Apply Filters</Button>
           </div>
         </div>
 
         {/* Product Grid */}
         <div className="w-full md:w-3/4">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <div className="flex justify-center items-center py-32">
+              <Loader2 className="h-10 w-10 animate-spin text-primary/60" />
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-20 bg-muted/20 rounded-xl border border-dashed border-muted-foreground/20">
+              <Filter className="mx-auto h-12 w-12 text-muted-foreground/40 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">No products found</h2>
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                We couldn't find any products matching your current filters. Try adjusting your categories, brands, or price range.
+              </p>
+              <Button variant="outline" onClick={handleResetFilters}>Clear All Filters</Button>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
-            </div>
-          )}
-
-          {/* Pagination Placeholder */}
-          {!loading && products.length > 0 && (
-            <div className="flex justify-center mt-12 gap-2">
-              <Button variant="outline" disabled>
-                Previous
-              </Button>
-              <Button variant="default">1</Button>
-              <Button variant="outline">2</Button>
-              <Button variant="outline">Next</Button>
             </div>
           )}
         </div>
