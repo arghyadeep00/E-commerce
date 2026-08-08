@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema(
     cart: [
       {
         product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        variantId: { type: String },
+        color: { type: String },
+        storage: { type: String },
+        ram: { type: String },
         quantity: { type: Number, default: 1 },
       },
     ],

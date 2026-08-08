@@ -11,7 +11,7 @@ export const getCarts = asyncHandler(async (req, res) => {
 });
 
 export const createCart = asyncHandler(async (req, res) => {
-  const { productId, quantity = 1 } = req.body;
+  const { productId, variantId, color, storage, ram, quantity = 1 } = req.body;
   const user = await User.findById(req.user._id);
 
   if (!user) {
@@ -20,13 +20,13 @@ export const createCart = asyncHandler(async (req, res) => {
   }
 
   const existingItemIndex = user.cart.findIndex(
-    (item) => item.product.toString() === productId
+    (item) => item.product.toString() === productId && item.variantId === variantId
   );
 
   if (existingItemIndex >= 0) {
     user.cart[existingItemIndex].quantity += quantity;
   } else {
-    user.cart.push({ product: productId, quantity });
+    user.cart.push({ product: productId, variantId, color, storage, ram, quantity });
   }
 
   await user.save();
@@ -36,7 +36,7 @@ export const createCart = asyncHandler(async (req, res) => {
 });
 
 export const updateCart = asyncHandler(async (req, res) => {
-  const { id: productId } = req.params;
+  const { id: cartItemId } = req.params;
   const { quantity } = req.body;
 
   const user = await User.findById(req.user._id);
@@ -46,7 +46,7 @@ export const updateCart = asyncHandler(async (req, res) => {
   }
 
   const existingItemIndex = user.cart.findIndex(
-    (item) => item.product.toString() === productId
+    (item) => item._id.toString() === cartItemId
   );
 
   if (existingItemIndex >= 0) {
@@ -61,7 +61,7 @@ export const updateCart = asyncHandler(async (req, res) => {
 });
 
 export const deleteCart = asyncHandler(async (req, res) => {
-  const { id: productId } = req.params;
+  const { id: cartItemId } = req.params;
   const user = await User.findById(req.user._id);
 
   if (!user) {
@@ -69,7 +69,7 @@ export const deleteCart = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  user.cart = user.cart.filter((item) => item.product.toString() !== productId);
+  user.cart = user.cart.filter((item) => item._id.toString() !== cartItemId);
   await user.save();
   await user.populate('cart.product');
 

@@ -25,7 +25,7 @@ export default function CartPage() {
   };
 
   const updateQuantity = (item: any, qty: number) => {
-    dispatch(updateCartQtyAsync({ productId: item._id, quantity: qty }));
+    dispatch(updateCartQtyAsync({ cartItemId: item._id, quantity: qty }));
   };
 
   const removeItem = (id: string) => {
@@ -65,9 +65,16 @@ export default function CartPage() {
                 />
                 <div className="flex-1 flex flex-col sm:flex-row items-center justify-between w-full gap-4">
                   <div className="flex-1 text-center sm:text-left">
-                    <Link href={`/product/${item._id}`} className="font-semibold text-lg hover:underline line-clamp-2">
+                    <Link href={`/product/${item.productId}`} className="font-semibold text-lg hover:underline line-clamp-2">
                       {item.name}
                     </Link>
+                    {(item.color || item.storage || item.ram) && (
+                      <div className="text-sm text-muted-foreground mt-1 flex flex-wrap gap-2">
+                        {item.color && <span className="bg-muted px-2 py-0.5 rounded">Color: {item.color}</span>}
+                        {item.storage && <span className="bg-muted px-2 py-0.5 rounded">Storage: {item.storage}</span>}
+                        {item.ram && <span className="bg-muted px-2 py-0.5 rounded">RAM: {item.ram}</span>}
+                      </div>
+                    )}
                     <p className="text-xl font-bold mt-2">₹{item.price.toLocaleString('en-IN')}</p>
                   </div>
 

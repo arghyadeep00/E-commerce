@@ -3,6 +3,11 @@ import api from '../../api';
 
 export interface CartItem {
   _id: string;
+  productId: string;
+  variantId?: string;
+  color?: string;
+  storage?: string;
+  ram?: string;
   name: string;
   image: string;
   price: number;
@@ -43,12 +48,23 @@ const mapDBCart = (data: any[]): CartItem[] => {
   return data.map((item) => {
     // sometimes populate might fail if product is deleted
     const prod = item.product || {};
+    
+    // Check if variant matches to override price and image
+    const variant = item.variantId && prod.variants 
+      ? prod.variants.find((v: any) => v._id === item.variantId) 
+      : null;
+      
     return {
-      _id: prod._id || item._id, // fallback
+      _id: item._id, // use cart item _id as primary unique id
+      productId: prod._id,
+      variantId: item.variantId,
+      color: item.color,
+      storage: item.storage,
+      ram: item.ram,
       name: prod.name || 'Unknown Product',
-      image: prod.thumbnail || 'https://placehold.co/400x400/png?text=Product',
-      price: prod.price || 0,
-      countInStock: prod.stock || 10,
+      image: (variant && variant.images && variant.images.length > 0) ? variant.images[0] : (prod.thumbnail || 'https://placehold.co/400x400/png?text=Product'),
+      price: variant?.price || prod.price || 0,
+      countInStock: variant?.stock || prod.stock || 10,
       qty: item.quantity,
     };
   });
@@ -68,9 +84,9 @@ export const fetchCart = createAsyncThunk(
 
 export const addToCartAsync = createAsyncThunk(
   'cart/addToCartAsync',
-  async ({ productId, quantity }: { productId: string; quantity: number }, { rejectWithValue }) => {
+  async ({ productId, variantId, color, storage, ram, quantity }: { productId: string; variantId?: string; color?: string; storage?: string; ram?: string; quantity: number }, { rejectWithValue }) => {
     try {
-      const response = await api.post('/cart', { productId, quantity });
+      const response = await api.post('/cart', { productId, variantId, color, storage, ram, quantity });
       return mapDBCart(response.data);
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to add to cart');
@@ -80,9 +96,9 @@ export const addToCartAsync = createAsyncThunk(
 
 export const updateCartQtyAsync = createAsyncThunk(
   'cart/updateCartQtyAsync',
-  async ({ productId, quantity }: { productId: string; quantity: number }, { rejectWithValue }) => {
+  async ({ cartItemId, quantity }: { cartItemId: string; quantity: number }, { rejectWithValue }) => {
     try {
-      const response = await api.patch(`/cart/${productId}`, { quantity });
+      const response = await api.patch(`/cart/${cartItemId}`, { quantity });
       return mapDBCart(response.data);
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to update cart');
@@ -92,9 +108,9 @@ export const updateCartQtyAsync = createAsyncThunk(
 
 export const removeFromCartAsync = createAsyncThunk(
   'cart/removeFromCartAsync',
-  async (productId: string, { rejectWithValue }) => {
+  async (cartItemId: string, { rejectWithValue }) => {
     try {
-      const response = await api.delete(`/cart/${productId}`);
+      const response = await api.delete(`/cart/${cartItemId}`);
       return mapDBCart(response.data);
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to remove from cart');

@@ -18,8 +18,20 @@ export default function ProductClient({ product }: { product: any }) {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(product.thumbnail);
 
+  // Variant states
+  const hasVariants = product.variants && product.variants.length > 0;
+  const initialVariant = hasVariants ? product.variants[0] : null;
+  const [selectedVariant, setSelectedVariant] = useState<any>(initialVariant);
+  const [selectedColor, setSelectedColor] = useState<string>(initialVariant?.color || "");
+  const [selectedStorage, setSelectedStorage] = useState<string>(initialVariant?.storage || "");
+  const [selectedRam, setSelectedRam] = useState<string>(initialVariant?.ram || "");
+
+  const uniqueColors = hasVariants ? Array.from(new Set(product.variants.map((v: any) => v.color).filter(Boolean))) : [];
+  const uniqueStorage = hasVariants ? Array.from(new Set(product.variants.map((v: any) => v.storage).filter(Boolean))) : [];
+  const uniqueRam = hasVariants ? Array.from(new Set(product.variants.map((v: any) => v.ram).filter(Boolean))) : [];
+
   const isWishlisted = wishlistItems?.some((item) => item._id === product._id);
-  const isInCart = cartItems?.some((item) => item._id === product._id);
+  const isInCart = cartItems?.some((item) => item.productId === product._id && (!selectedVariant || item.variantId === selectedVariant._id));
 
   const handleWishlist = () => {
     if (!isAuthenticated) {
@@ -35,16 +47,38 @@ export default function ProductClient({ product }: { product: any }) {
 
 
   useEffect(() => {
-    setActiveImage(product.thumbnail);
-    setQuantity(1);
-  }, [product._id, product.thumbnail]);
+    // Determine selected variant based on selected attributes
+    if (hasVariants) {
+      const matched = product.variants.find(
+        (v: any) => 
+          (!selectedColor || v.color === selectedColor) &&
+          (!selectedStorage || v.storage === selectedStorage) &&
+          (!selectedRam || v.ram === selectedRam)
+      );
+      if (matched) {
+        setSelectedVariant(matched);
+      }
+    }
+  }, [selectedColor, selectedStorage, selectedRam, product.variants, hasVariants]);
 
-  const images = product.images?.length > 0 ? product.images : [product.thumbnail];
-  const inStock = (product.stock || 0) > 0;
-  const atMax = quantity >= (product.stock || 0);
+  useEffect(() => {
+    if (selectedVariant && selectedVariant.images && selectedVariant.images.length > 0) {
+      setActiveImage(selectedVariant.images[0]);
+    } else {
+      setActiveImage(product.thumbnail);
+    }
+    setQuantity(1);
+  }, [product._id, product.thumbnail, selectedVariant]);
+
+  const images = (selectedVariant?.images?.length > 0) ? selectedVariant.images : (product.images?.length > 0 ? product.images : [product.thumbnail]);
+  const stock = selectedVariant ? selectedVariant.stock : (product.stock || 0);
+  const inStock = stock > 0;
+  const atMax = quantity >= stock;
+  const price = selectedVariant?.price || product.price;
+  const compareAtPrice = product.compareAtPrice;
   const discountPct =
-    product.compareAtPrice && product.compareAtPrice > product.price
-      ? Math.round(100 - (product.price / product.compareAtPrice) * 100)
+    compareAtPrice && compareAtPrice > price
+      ? Math.round(100 - (price / compareAtPrice) * 100)
       : null;
 
   const handleAddToCart = () => {
@@ -55,6 +89,10 @@ export default function ProductClient({ product }: { product: any }) {
     dispatch(
       addToCartAsync({
         productId: product._id,
+        variantId: selectedVariant?._id,
+        color: selectedVariant?.color,
+        storage: selectedVariant?.storage,
+        ram: selectedVariant?.ram,
         quantity: quantity,
       }),
     );
@@ -131,22 +169,90 @@ export default function ProductClient({ product }: { product: any }) {
         </div>
 
         <div className="flex items-baseline gap-2 mb-1">
-          <span className="text-3xl font-bold tabular-nums">₹{product.price.toFixed(2)}</span>
+          <span className="text-3xl font-bold tabular-nums">₹{price.toFixed(2)}</span>
           {discountPct !== null && (
             <span className="text-lg text-muted-foreground line-through tabular-nums">
-              ₹{product.compareAtPrice.toFixed(2)}
+              ₹{compareAtPrice.toFixed(2)}
             </span>
           )}
         </div>
         <p className="text-sm mb-6">
           {inStock ? (
             <span className="text-emerald-600 font-medium">
-              In stock — {product.stock} left
+              In stock — {stock} left
             </span>
           ) : (
             <span className="text-destructive font-medium">Out of stock</span>
           )}
         </p>
+
+        {/* Variants UI */}
+        {hasVariants && (
+          <div className="flex flex-col gap-5 mb-8 border-b pb-8">
+            {uniqueColors.length > 0 && (
+              <div className="space-y-3">
+                <span className="text-sm font-medium">Color</span>
+                <div className="flex flex-wrap gap-2">
+                  {uniqueColors.map((color: any) => (
+                    <button
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors ${
+                        selectedColor === color 
+                          ? "border-primary bg-primary text-primary-foreground" 
+                          : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                      }`}
+                    >
+                      {color}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {uniqueStorage.length > 0 && (
+              <div className="space-y-3">
+                <span className="text-sm font-medium">Storage</span>
+                <div className="flex flex-wrap gap-2">
+                  {uniqueStorage.map((storage: any) => (
+                    <button
+                      key={storage}
+                      onClick={() => setSelectedStorage(storage)}
+                      className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors ${
+                        selectedStorage === storage 
+                          ? "border-primary bg-primary text-primary-foreground" 
+                          : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                      }`}
+                    >
+                      {storage}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {uniqueRam.length > 0 && (
+              <div className="space-y-3">
+                <span className="text-sm font-medium">RAM</span>
+                <div className="flex flex-wrap gap-2">
+                  {uniqueRam.map((ram: any) => (
+                    <button
+                      key={ram}
+                      onClick={() => setSelectedRam(ram)}
+                      className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors ${
+                        selectedRam === ram 
+                          ? "border-primary bg-primary text-primary-foreground" 
+                          : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                      }`}
+                    >
+                      {ram}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Quantity + Actions */}
         <div className="flex flex-col gap-3 mb-8">
@@ -169,7 +275,7 @@ export default function ProductClient({ product }: { product: any }) {
                 size="icon"
                 className="h-9 w-9"
                 disabled={atMax || !inStock}
-                onClick={() => setQuantity((q) => Math.min(product.stock || 0, q + 1))}
+                onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
                 aria-label="Increase quantity"
               >
                 <Plus className="h-3.5 w-3.5" />
