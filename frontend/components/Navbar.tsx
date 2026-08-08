@@ -7,6 +7,7 @@ import { Button, buttonVariants } from "./ui/button";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { fetchWishlist, clearWishlist } from "@/lib/features/wishlist/wishlistSlice";
 import { fetchCart, clearCartOnLogout } from "@/lib/features/cart/cartSlice";
+import { fetchAddresses, clearAddressesOnLogout } from "@/lib/features/address/addressSlice";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
@@ -25,9 +26,11 @@ export default function Navbar() {
     if (isAuthenticated) {
       dispatch(fetchWishlist());
       dispatch(fetchCart());
+      dispatch(fetchAddresses());
     } else {
       dispatch(clearWishlist());
       dispatch(clearCartOnLogout());
+      dispatch(clearAddressesOnLogout());
     }
   }, [isAuthenticated, dispatch]);
 
