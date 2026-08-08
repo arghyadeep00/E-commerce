@@ -148,7 +148,7 @@ export default function ProductsBrowser({
               </Button>
             </div>
             <Label htmlFor="sort" className="whitespace-nowrap hidden md:inline-block">Sort by:</Label>
-            <div className="relative w-full md:w-[180px]">
+            <div className="relative w-full md:w-45">
               <select 
                 id="sort"
                 value={sort} 

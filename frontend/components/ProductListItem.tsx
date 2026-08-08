@@ -109,9 +109,9 @@ export default function ProductListItem({ product }: { product: ProductProps }) 
       className={`group relative overflow-hidden border-border/50 bg-card transition-all duration-500 hover:shadow-lg hover:shadow-primary/5 flex flex-col sm:flex-row p-0 rounded-xl ${isVisible ? 'animate-fade-in-down' : 'opacity-0'}`}
     >
       {/* Left Column: Image */}
-      <div className="w-full sm:w-[250px] shrink-0 bg-muted/10 relative border-b sm:border-b-0 sm:border-r border-border/50 flex flex-col justify-center">
+      <div className="w-full sm:w-62.5 shrink-0 bg-muted/10 relative border-b sm:border-b-0 sm:border-r border-border/50 flex flex-col justify-center">
         <Link href={`/product/${product._id}`} className="block h-full">
-          <div className="w-full h-full p-6 flex items-center justify-center relative min-h-[200px]">
+          <div className="w-full h-full p-6 flex items-center justify-center relative min-h-50">
             <Image
               src={
                 product.thumbnail ||
@@ -120,7 +120,7 @@ export default function ProductListItem({ product }: { product: ProductProps }) 
               alt={product.name}
               width={250}
               height={250}
-              className="object-contain max-w-full max-h-[200px] transition-transform duration-700 group-hover:scale-105 drop-shadow-sm"
+              className="object-contain max-w-full max-h-50 transition-transform duration-700 group-hover:scale-105 drop-shadow-sm"
             />
           </div>
         </Link>
@@ -174,7 +174,7 @@ export default function ProductListItem({ product }: { product: ProductProps }) 
       </div>
       
       {/* Right Column: Price & Actions */}
-      <div className="w-full sm:w-[220px] shrink-0 p-5 md:p-6 flex flex-col justify-center sm:border-l border-border/30 bg-muted/5">
+      <div className="w-full sm:w-55 shrink-0 p-5 md:p-6 flex flex-col justify-center sm:border-l border-border/30 bg-muted/5">
         <div className="mb-6">
           <div className="flex items-baseline gap-2 flex-wrap">
             <span className="text-2xl font-black text-foreground tracking-tight">
