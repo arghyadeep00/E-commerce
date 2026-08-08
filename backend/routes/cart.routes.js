@@ -1,3 +1,4 @@
+import express from "express";
 import {
   getCarts,
   createCart,
@@ -5,14 +6,14 @@ import {
   deleteCart,
   deleteClear
 } from '../controllers/cart.controller.js';
+import { protect } from '../middleware/authMiddleware.js';
 
-import express from "express";
 const router = express.Router();
 
-router.get('/', getCarts);
-router.post('/', createCart);
-router.patch('/cart/:id', updateCart);
-router.delete('/cart/:id', deleteCart);
-router.delete('/clear', deleteClear);
+router.get('/', protect, getCarts);
+router.post('/', protect, createCart);
+router.delete('/clear', protect, deleteClear);
+router.patch('/:id', protect, updateCart);
+router.delete('/:id', protect, deleteCart);
 
 export default router;

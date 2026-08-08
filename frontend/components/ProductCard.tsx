@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import {
 } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { addToCart } from "@/lib/features/cart/cartSlice";
+import { addToCartAsync } from "@/lib/features/cart/cartSlice";
 import { addToWishlist, removeFromWishlist } from "@/lib/features/wishlist/wishlistSlice";
 
 export interface ProductProps {
@@ -31,13 +32,16 @@ export interface ProductProps {
 }
 
 export default function ProductCard({ product }: { product: ProductProps }) {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { items: wishlistItems } = useAppSelector((state) => state.wishlist);
+  const { cartItems } = useAppSelector((state) => state.cart);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const isWishlisted = wishlistItems?.some((item) => item._id === product._id);
+  const isInCart = cartItems?.some((item) => item._id === product._id);
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -77,16 +81,30 @@ export default function ProductCard({ product }: { product: ProductProps }) {
   }, []);
 
   const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      window.location.href = '/login?redirect=' + window.location.pathname;
+      return;
+    }
     dispatch(
-      addToCart({
-        _id: product._id,
-        name: product.name,
-        image: product.thumbnail,
-        price: product.price,
-        countInStock: 10,
-        qty: 1,
+      addToCartAsync({
+        productId: product._id,
+        quantity: 1,
       }),
     );
+  };
+
+  const handleBuyNow = async () => {
+    if (!isAuthenticated) {
+      window.location.href = '/login?redirect=shipping';
+      return;
+    }
+    await dispatch(
+      addToCartAsync({
+        productId: product._id,
+        quantity: 1,
+      }),
+    ).unwrap();
+    router.push('/cart');
   };
 
   return (
@@ -186,12 +204,13 @@ export default function ProductCard({ product }: { product: ProductProps }) {
         <Button
           variant="outline"
           size="icon"
-          className="shrink-0 h-11 w-11 rounded-xl border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300 shadow-sm"
+          disabled={isInCart}
+          className={`shrink-0 h-11 w-11 rounded-xl border-primary/20 text-primary transition-colors duration-300 shadow-sm ${isInCart ? 'opacity-50 cursor-not-allowed bg-muted' : 'hover:bg-primary hover:text-primary-foreground'}`}
           onClick={(e) => {
             e.preventDefault();
             handleAddToCart();
           }}
-          title="Add to Cart"
+          title={isInCart ? "Already in Cart" : "Add to Cart"}
         >
           <ShoppingCart className="h-5 w-5" />
         </Button>
@@ -199,7 +218,7 @@ export default function ProductCard({ product }: { product: ProductProps }) {
           className="w-[80%] h-11 rounded-xl font-bold tracking-wide shadow-md hover:shadow-primary/25 transition-all duration-300"
           onClick={(e) => {
             e.preventDefault();
-            handleAddToCart();
+            handleBuyNow();
           }}
         >
           Buy Now

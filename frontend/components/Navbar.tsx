@@ -6,6 +6,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { Button, buttonVariants } from "./ui/button";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { fetchWishlist, clearWishlist } from "@/lib/features/wishlist/wishlistSlice";
+import { fetchCart, clearCartOnLogout } from "@/lib/features/cart/cartSlice";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
@@ -23,8 +24,10 @@ export default function Navbar() {
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchWishlist());
+      dispatch(fetchCart());
     } else {
       dispatch(clearWishlist());
+      dispatch(clearCartOnLogout());
     }
   }, [isAuthenticated, dispatch]);
 

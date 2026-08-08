@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getProductsByCategory } from "@/data/product";
 import ProductCard, { ProductProps } from "@/components/ProductCard";
+import ProductsBrowser from "@/components/ProductsBrowser";
 import { ArrowRight, PackageX } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { getCategoryBySlug } from "@/data/category";
@@ -135,38 +136,24 @@ export default async function CategoryPage({
       </section>
 
       <main className="container mx-auto px-4 md:px-8 py-12">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-10">
-          <div>
-            <p className="text-sm uppercase tracking-[0.24em] text-primary/80 font-semibold mb-2">
-              Category Collection
-            </p>
-            <h2 className="text-3xl font-bold text-foreground">Top Picks</h2>
-          </div>
-          <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-            <span className="rounded-full border border-border bg-card px-4 py-2">Featured</span>
-            <span className="rounded-full border border-border bg-card px-4 py-2">Popular</span>
-            <span className="rounded-full border border-border bg-card px-4 py-2">New Arrivals</span>
-          </div>
-        </div>
-
-        {products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
+        {categoryInfo?._id ? (
+          <ProductsBrowser 
+            initialCategoryId={categoryInfo._id} 
+            hideCategoryFilter={true} 
+            hideHeader={true} 
+          />
         ) : (
           <div className="rounded-3xl border border-dashed border-muted/40 bg-muted/20 p-12 text-center">
             <PackageX className="mx-auto mb-6 h-16 w-16 text-muted-foreground/60" />
-            <h2 className="text-2xl font-semibold text-foreground mb-3">No products available</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-3">Category Not Found</h2>
             <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              We couldn't find products in this category yet. Explore more categories or browse the complete store for similar items.
+              We couldn't find this category. Explore more categories or browse the complete store.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/products" className={buttonVariants()}>
                 Browse All Products
               </Link>
-              <Link href="/categories" className={buttonVariants({ variant: "outline" })}>
+              <Link href="/category" className={buttonVariants({ variant: "outline" })}>
                 Explore Categories
               </Link>
             </div>

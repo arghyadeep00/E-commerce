@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { addToCart, removeFromCart } from "@/lib/features/cart/cartSlice";
+import { updateCartQtyAsync, removeFromCartAsync } from "@/lib/features/cart/cartSlice";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -25,11 +25,11 @@ export default function CartPage() {
   };
 
   const updateQuantity = (item: any, qty: number) => {
-    dispatch(addToCart({ ...item, qty }));
+    dispatch(updateCartQtyAsync({ productId: item._id, quantity: qty }));
   };
 
   const removeItem = (id: string) => {
-    dispatch(removeFromCart(id));
+    dispatch(removeFromCartAsync(id));
   };
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.qty * item.price, 0);
@@ -68,7 +68,7 @@ export default function CartPage() {
                     <Link href={`/product/${item._id}`} className="font-semibold text-lg hover:underline line-clamp-2">
                       {item.name}
                     </Link>
-                    <p className="text-xl font-bold mt-2">${item.price.toFixed(2)}</p>
+                    <p className="text-xl font-bold mt-2">₹{item.price.toLocaleString('en-IN')}</p>
                   </div>
 
                   <div className="flex items-center gap-4">
@@ -113,7 +113,7 @@ export default function CartPage() {
               <CardContent className="pt-6 space-y-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Items ({cartItems.reduce((acc, item) => acc + item.qty, 0)}):</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">₹{subtotal.toLocaleString('en-IN')}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Shipping:</span>
@@ -121,7 +121,7 @@ export default function CartPage() {
                 </div>
                 <div className="border-t pt-4 flex justify-between items-center">
                   <span className="text-lg font-bold">Subtotal:</span>
-                  <span className="text-2xl font-extrabold">${subtotal.toFixed(2)}</span>
+                  <span className="text-2xl font-extrabold">₹{subtotal.toLocaleString('en-IN')}</span>
                 </div>
               </CardContent>
               <CardFooter className="bg-primary/5 border-t pt-6">

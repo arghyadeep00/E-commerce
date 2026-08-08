@@ -7,17 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { addToCart } from "@/lib/features/cart/cartSlice";
+import { addToCartAsync } from "@/lib/features/cart/cartSlice";
 import { addToWishlist, removeFromWishlist } from "@/lib/features/wishlist/wishlistSlice";
 
 export default function ProductClient({ product }: { product: any }) {
   const dispatch = useAppDispatch();
   const { items: wishlistItems } = useAppSelector((state) => state.wishlist);
+  const { cartItems } = useAppSelector((state) => state.cart);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(product.thumbnail);
 
   const isWishlisted = wishlistItems?.some((item) => item._id === product._id);
+  const isInCart = cartItems?.some((item) => item._id === product._id);
 
   const handleWishlist = () => {
     if (!isAuthenticated) {
@@ -46,14 +48,14 @@ export default function ProductClient({ product }: { product: any }) {
       : null;
 
   const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      window.location.href = '/login?redirect=' + window.location.pathname;
+      return;
+    }
     dispatch(
-      addToCart({
-        _id: product._id,
-        name: product.name,
-        image: product.thumbnail,
-        price: product.price,
-        countInStock: product.stock,
-        qty: quantity,
+      addToCartAsync({
+        productId: product._id,
+        quantity: quantity,
       }),
     );
   };
@@ -179,10 +181,10 @@ export default function ProductClient({ product }: { product: any }) {
             <Button
               size="lg"
               className="flex-1 gap-2"
-              disabled={!inStock}
+              disabled={!inStock || isInCart}
               onClick={handleAddToCart}
             >
-              <ShoppingCart className="h-4 w-4" /> Add to cart
+              <ShoppingCart className="h-4 w-4" /> {isInCart ? "Already in cart" : "Add to cart"}
             </Button>
             <Button size="lg" variant="outline" className={`px-4 ${isWishlisted ? 'text-red-500 border-red-500/20 bg-red-50 hover:bg-red-100 hover:text-red-600 dark:bg-red-500/10 dark:hover:bg-red-500/20' : ''}`} aria-label="Save for later" onClick={handleWishlist}>
               <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
