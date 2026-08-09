@@ -8,16 +8,14 @@ import {
   updateCancel
 } from '../controllers/order.controller.js';
 
+import { protect } from '../middleware/authMiddleware.js';
 import express from 'express';
 const router = express.Router();
 
-router.get('/', getOrders);
-router.get('/:id', getOrderById);
+router.route('/').post(protect, createOrder).get(protect, getOrders);
+router.route('/:id').get(protect, getOrderById).patch(protect, updateOrder).delete(protect, deleteOrder);
 router.get('/track/:orderNumber', getTrack);
-router.post('/', createOrder);
-router.patch('/:id', updateOrder);
-router.delete('/:id', deleteOrder);
-router.patch('/cancel/:id', updateCancel); 
+router.patch('/cancel/:id', protect, updateCancel); 
 
 
 export default router;

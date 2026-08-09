@@ -51,6 +51,7 @@ export default function ShippingPage() {
     if (selected) {
       // Map to old shipping format expected by checkout
       dispatch(saveShippingAddress({
+        _id: selected._id,
         address: `${selected.addressLine1} ${selected.addressLine2 || ''}`.trim(),
         city: selected.city,
         postalCode: selected.zipCode,

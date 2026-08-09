@@ -35,10 +35,26 @@ const loadState = () => {
   }
 };
 
-const initialState: CartState = loadState() || {
+const saveState = (state: CartState) => {
+  try {
+    if (typeof window !== 'undefined') {
+      const stateToSave = {
+        shippingAddress: state.shippingAddress,
+        paymentMethod: state.paymentMethod,
+      };
+      localStorage.setItem('cart', JSON.stringify(stateToSave));
+    }
+  } catch (err) {
+    // ignore
+  }
+};
+
+const savedState = loadState() || {};
+
+const initialState: CartState = {
   cartItems: [],
-  shippingAddress: {},
-  paymentMethod: 'PayPal',
+  shippingAddress: savedState.shippingAddress || {},
+  paymentMethod: savedState.paymentMethod || 'PayPal',
   isLoading: false,
   error: null,
 };
@@ -137,21 +153,14 @@ const cartSlice = createSlice({
     // Keep these synchronous for local storage
     saveShippingAddress: (state, action: PayloadAction<any>) => {
       state.shippingAddress = action.payload;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('cart', JSON.stringify(state));
-      }
+      saveState(state);
     },
     savePaymentMethod: (state, action: PayloadAction<string>) => {
       state.paymentMethod = action.payload;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('cart', JSON.stringify(state));
-      }
+      saveState(state);
     },
     clearCartOnLogout: (state) => {
       state.cartItems = [];
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('cart', JSON.stringify(state));
-      }
     }
   },
   extraReducers: (builder) => {
@@ -163,9 +172,6 @@ const cartSlice = createSlice({
     const handleFulfilled = (state: CartState, action: PayloadAction<CartItem[]>) => {
       state.isLoading = false;
       state.cartItems = action.payload;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('cart', JSON.stringify(state));
-      }
     };
     
     const handleRejected = (state: CartState, action: any) => {
@@ -196,9 +202,6 @@ const cartSlice = createSlice({
     // Clear cart on logout
     builder.addCase('auth/logout/fulfilled', (state) => {
       state.cartItems = [];
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('cart', JSON.stringify(state));
-      }
     });
   },
 });

@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import api from "@/lib/api";
-import { clearCartItems } from "@/lib/features/cart/cartSlice";
+import { clearCartAsync } from "@/lib/features/cart/cartSlice";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -24,6 +24,17 @@ export default function PlaceOrderPage() {
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Load Razorpay script dynamically
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   // Calculate prices
   const itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
@@ -52,11 +63,55 @@ export default function PlaceOrderPage() {
         taxPrice,
         totalPrice,
       });
-      dispatch(clearCartItems());
-      router.push(`/order/${data._id}`); // Assumes you will build an order details page
+
+      if (cart.paymentMethod === 'Razorpay') {
+        // Create intent
+        const { data: intentData } = await api.post("/payment/create-intent", { orderId: data._id });
+
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TNiJNixeLIOX25',
+          amount: intentData.amount,
+          currency: intentData.currency,
+          name: "E-commerce App",
+          description: "Order Payment",
+          order_id: intentData.id,
+          handler: async function (response: any) {
+            try {
+              await api.post("/payment/verify", {
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+                orderId: data._id,
+              });
+              dispatch(clearCartAsync());
+              router.push(`/order/${data._id}`);
+            } catch (err: any) {
+              setError("Payment verification failed. Please contact support.");
+              setLoading(false);
+            }
+          },
+          prefill: {
+            name: "Customer",
+            email: "customer@example.com",
+            contact: "9999999999"
+          },
+          theme: {
+            color: "#3399cc"
+          }
+        };
+
+        const rzp1 = new (window as any).Razorpay(options);
+        rzp1.on('payment.failed', function (response: any){
+          setError(response.error.description);
+          setLoading(false);
+        });
+        rzp1.open();
+      } else {
+        dispatch(clearCartAsync());
+        router.push(`/order/${data._id}`);
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to place order. Try again.");
-    } finally {
       setLoading(false);
     }
   };
