@@ -26,7 +26,7 @@ export default function LoginPage() {
       
       // Ensure js-cookie is set (it's also set by httpOnly from backend, but if we need it for client-side access, backend must not set HttpOnly, or we set it here if returned in payload)
       if (data.token) {
-        Cookies.set("token", data.token, { expires: 1 });
+        Cookies.set("adminToken", data.token, { expires: 1 });
       }
 
       router.push("/");

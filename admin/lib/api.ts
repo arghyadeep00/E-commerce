@@ -14,7 +14,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // Get token from cookies
-    const token = Cookies.get("token");
+    const token = Cookies.get("adminToken");
     
     // If token exists, add it to the Authorization header
     if (token) {
@@ -38,7 +38,7 @@ api.interceptors.response.use(
       // Handle unauthorized errors (e.g., redirect to login or refresh token)
       console.error("Unauthorized! Redirecting to login...");
       if (typeof window !== "undefined") {
-        Cookies.remove("token");
+        Cookies.remove("adminToken");
         window.location.href = "/login";
       }
     }

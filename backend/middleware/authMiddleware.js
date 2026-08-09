@@ -3,7 +3,11 @@ import User from "../models/User.js";
 import Admin from "../models/Admin.js";
 
 const protect = async (req, res, next) => {
-  const token = req.cookies.token;
+  let token = req.cookies.token;
+
+  if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });
@@ -30,7 +34,11 @@ const authorize = (...roles) => {
 };
 
 const adminProtect = async (req, res, next) => {
-  const token = req.cookies.token;
+  let token = req.cookies.adminToken;
+
+  if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });

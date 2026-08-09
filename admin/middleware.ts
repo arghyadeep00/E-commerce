@@ -3,7 +3,7 @@ import type { NextRequest } from "next/dist/server/web/spec-extension/request";
 
 export function middleware(request: NextRequest) {
   // Check if there is any token in the cookies
-  const token = request.cookies.get("token")?.value;
+  const token = request.cookies.get("adminToken")?.value;
   
   const isLoginPage = request.nextUrl.pathname.startsWith("/login");
 

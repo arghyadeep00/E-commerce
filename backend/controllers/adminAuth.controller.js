@@ -35,35 +35,53 @@ export const loginAdmin = asyncHandler(async (req, res) => {
 
   const admin = await Admin.findOne({ email });
 
-  if (admin && (await admin.matchPassword(password))) {
-    const token = generateToken(admin._id);
-    const refreshToken = generateRefreshToken(admin._id);
-
-    res.cookie("token", token, cookieOptions);
-    res.cookie("refreshToken", refreshToken, refreshCookieOptions);
-
-    res.json({
-      _id: admin._id,
-      name: admin.name,
-      email: admin.email,
-      role: admin.role,
-      token,
-    });
-  } else {
-    res.status(401);
-    throw new Error("Invalid email or password");
+  if (!admin.email == email || !admin.password == password) {
+    return res.status(401).json({ message: "Invalid email or password" });
   }
+  
+  const token = generateToken(admin._id);
+  const refreshToken = generateRefreshToken(admin._id);
+
+  res.cookie("adminToken", token, cookieOptions);
+  res.cookie("adminRefreshToken", refreshToken, refreshCookieOptions);
+
+  res.json({
+    _id: admin._id,
+    name: admin.name,
+    email: admin.email,
+    role: admin.role,
+    token,
+  });
+
+  // if (admin && (await admin.matchPassword(password))) {
+  //   const token = generateToken(admin._id);
+  //   const refreshToken = generateRefreshToken(admin._id);
+
+  //   res.cookie("adminToken", token, cookieOptions);
+  //   res.cookie("adminRefreshToken", refreshToken, refreshCookieOptions);
+
+  //   res.json({
+  //     _id: admin._id,
+  //     name: admin.name,
+  //     email: admin.email,
+  //     role: admin.role,
+  //     token,
+  //   });
+  // } else {
+  //   res.status(401);
+  //   throw new Error("Invalid email or password");
+  // }
 });
 
 // @desc    Logout admin / clear cookie
 // @route   POST /api/admin-auth/logout
 // @access  Private
 export const logoutAdmin = asyncHandler(async (req, res) => {
-  res.cookie("token", "", {
+  res.cookie("adminToken", "", {
     httpOnly: true,
     expires: new Date(0),
   });
-  res.cookie("refreshToken", "", {
+  res.cookie("adminRefreshToken", "", {
     httpOnly: true,
     expires: new Date(0),
   });
