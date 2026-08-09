@@ -30,21 +30,32 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "http://localhost:3001",
-  "http://127.0.0.1:3001",
-  process.env.CLIENT_URL,
-].filter(Boolean);
+const clientUrl = process.env.CLIENT_URL;
+let allowedOrigins = clientUrl;
+if (clientUrl && clientUrl.startsWith('[')) {
+  try {
+    allowedOrigins = JSON.parse(clientUrl.replace(/,\s*\]$/, ']'));
+    console.log(allowedOrigins)
+  } catch (e) {
+    console.error("Failed to parse CLIENT_URL", e);
+  }
+}
 
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+// auth user and admin
 app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
+app.use("/api/admin-auth", adminAuthRoutes);
+
+// user and admin route
 app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
+
+app.use("/api/home", publicRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/products", productRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/brands", brandRoutes);
@@ -56,11 +67,17 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/banners", bannerRoutes);
 app.use("/api/notifications", notificationRoutes);
+
+// upload route
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use("/api/upload", uploadRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/admin-auth", adminAuthRoutes);
-app.use("/api/home", publicRoutes);
+
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.get("/", (req, res) => {
   res.send("API is running...");

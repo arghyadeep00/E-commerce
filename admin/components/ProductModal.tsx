@@ -61,6 +61,7 @@ export default function ProductModal({
   const [specs, setSpecs] = useState<{ key: string; value: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingThumbnail, setUploadingThumbnail] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -270,6 +271,37 @@ export default function ProductModal({
       ...prev,
       images: prev.images.filter((_, index) => index !== indexToRemove),
     }));
+  };
+
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+
+    setUploadingThumbnail(true);
+    const uploadData = new FormData();
+    uploadData.append("image", e.target.files[0]);
+
+    try {
+      const res = await api.post("/upload/image", uploadData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.data && res.data.image) {
+        setFormData((prev) => ({
+          ...prev,
+          thumbnail: res.data.image,
+        }));
+      }
+    } catch (err: any) {
+      console.error("Thumbnail upload failed", err);
+      setError(err.response?.data?.message || "Failed to upload thumbnail");
+    } finally {
+      setUploadingThumbnail(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleRemoveThumbnail = () => {
+    setFormData((prev) => ({ ...prev, thumbnail: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -842,18 +874,48 @@ export default function ProductModal({
 
             {activeTab === "media" && (
               <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1.5">
-                    Thumbnail URL (optional)
+                <div className="space-y-4">
+                  <label className="block text-sm font-medium text-gray-400">
+                    Product Thumbnail
                   </label>
-                  <input
-                    type="text"
-                    name="thumbnail"
-                    value={formData.thumbnail}
-                    onChange={handleChange}
-                    placeholder="https://..."
-                    className="w-full bg-background border border-border rounded-lg py-2 px-3 text-white"
-                  />
+                  <div className="flex flex-wrap gap-4">
+                    {formData.thumbnail ? (
+                      <div className="relative group w-24 h-24 rounded-lg border border-border overflow-hidden bg-background">
+                        <img
+                          src={getImgSrc(formData.thumbnail)}
+                          alt="Thumbnail"
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoveThumbnail}
+                          className="absolute top-1 right-1 bg-black/70 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="relative w-24 h-24 rounded-lg border-2 border-dashed border-border hover:border-brand transition-colors bg-background flex flex-col items-center justify-center cursor-pointer">
+                        {uploadingThumbnail ? (
+                          <Loader2 className="w-6 h-6 animate-spin text-brand" />
+                        ) : (
+                          <>
+                            <span className="text-2xl text-gray-500">+</span>
+                            <span className="text-xs text-gray-500 mt-1">
+                              Upload
+                            </span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleThumbnailUpload}
+                          disabled={uploadingThumbnail}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-4">

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Star, ShoppingCart, Heart, ShieldCheck, Truck, RotateCcw, Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -101,7 +102,7 @@ export default function ProductClient({ product }: { product: any }) {
   return (
     <div className="grid grid-cols-1 items-center justify-items-center md:grid-cols-2 gap-10 lg:gap-16 xl:gap-20">
       {/* Image Gallery */}
-      <div className="flex flex-col gap-3 w-full max-w-md mx-auto md:mx-0">
+      <div className="flex flex-col gap-3 w-full max-w-md mx-auto md:mx-0 md:-mt-60">
         <div className="rounded-xl overflow-hidden border bg-muted/10 flex items-center justify-center aspect-square relative w-full">
           {discountPct !== null && (
             <Badge className="absolute top-3 left-3 z-10" variant="destructive">
@@ -109,7 +110,7 @@ export default function ProductClient({ product }: { product: any }) {
             </Badge>
           )}
           <Image
-            src={activeImage}
+            src={getImageUrl(activeImage)}
             alt={product.name}
             width={800}
             height={800}
@@ -128,7 +129,7 @@ export default function ProductClient({ product }: { product: any }) {
                   activeImage === img ? "border-primary" : "border-transparent hover:border-muted-foreground/30"
                 }`}
               >
-                <Image src={img} alt="" width={64} height={64} className="w-full h-full object-contain p-1" />
+                <Image src={getImageUrl(img)} alt="" width={64} height={64} className="w-full h-full object-contain p-1" />
               </button>
             ))}
           </div>

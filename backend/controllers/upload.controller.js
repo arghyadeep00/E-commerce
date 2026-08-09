@@ -6,9 +6,14 @@ export const imageUpload = asyncHandler(async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No image provided" });
   }
+  
+  const filename = path.basename(req.file.path);
+  const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${filename}`;
+  
   res.status(200).json({
     message: "Image uploaded successfully",
-    image: `/${req.file.path.replace(/\\/g, '/')}`,
+    image: fileUrl,
+    url: fileUrl
   });
 });
 
@@ -17,11 +22,15 @@ export const multipleUpload = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "No images provided" });
   }
   
-  const imagePaths = req.files.map(file => `/${file.path.replace(/\\/g, '/')}`);
+  const imagePaths = req.files.map(file => {
+    const filename = path.basename(file.path);
+    return `${req.protocol}://${req.get('host')}/uploads/${filename}`;
+  });
   
   res.status(200).json({
     message: "Images uploaded successfully",
     images: imagePaths,
+    urls: imagePaths
   });
 });
 

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -120,10 +121,7 @@ export default function ProductCard({ product }: { product: ProductProps }) {
             <AspectRatio ratio={1}>
               <div className="w-full h-full p-6 flex items-center justify-center rounded-2xl">
                 <Image
-                  src={
-                    product.thumbnail ||
-                    "https://placehold.co/400x400/png?text=Product"
-                  }
+                  src={getImageUrl(product.thumbnail)}
                   alt={product.name}
                   width={400}
                   height={400}

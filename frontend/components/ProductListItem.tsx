@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -113,10 +114,7 @@ export default function ProductListItem({ product }: { product: ProductProps }) 
         <Link href={`/product/${product._id}`} className="block h-full">
           <div className="w-full h-full p-6 flex items-center justify-center relative min-h-50">
             <Image
-              src={
-                product.thumbnail ||
-                "https://placehold.co/400x400/png?text=Product"
-              }
+              src={getImageUrl(product.thumbnail)}
               alt={product.name}
               width={250}
               height={250}

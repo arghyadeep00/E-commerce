@@ -62,7 +62,7 @@ export const createProduct = asyncHandler(async (req, res) => {
 export const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = await Product.findByIdAndUpdate(id, req.body, {
-    new: true,
+    returnDocument: "after",
     runValidators: true,
   });
 
