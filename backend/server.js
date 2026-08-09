@@ -20,6 +20,7 @@ import notificationRoutes from "./routes/notification.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import dashboardRoutes from "./routes/dashboard.route.js";
 import adminRoutes from "./routes/admin.routes.js";
+import adminAuthRoutes from "./routes/adminAuth.routes.js";
 import publicRoutes from "./routes/public.routes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
@@ -56,6 +57,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/home", publicRoutes);
 
 app.get("/", (req, res) => {
