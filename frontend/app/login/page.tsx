@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { login, clearError } from "@/lib/features/auth/authSlice";
 import { Button } from "@/components/ui/button";
@@ -18,22 +18,29 @@ import {
 } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { isLoading, error, isAuthenticated } = useAppSelector((state) => state.auth);
+
+  const redirect = searchParams.get("redirect");
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push("/");
+      if (redirect) {
+        router.push(redirect.startsWith("/") ? redirect : `/${redirect}`);
+      } else {
+        router.push("/");
+      }
     }
     return () => {
       dispatch(clearError());
     };
-  }, [isAuthenticated, router, dispatch]);
+  }, [isAuthenticated, router, dispatch, redirect]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,5 +112,13 @@ export default function LoginPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-[80vh] items-center justify-center p-4">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

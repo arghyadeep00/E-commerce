@@ -19,9 +19,14 @@ export default function CartPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const checkoutHandler = () => {
-    router.push("/login?redirect=shipping");
+    if (isAuthenticated) {
+      router.push("/shipping");
+    } else {
+      router.push("/login?redirect=shipping");
+    }
   };
 
   const updateQuantity = (item: any, qty: number) => {

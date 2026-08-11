@@ -44,7 +44,7 @@ export default function OrdersPage() {
         </div>
       </div>
 
-      <div className="bg-card rounded-xl border border-border overflow-hidden min-h-[400px]">
+      <div className="bg-card rounded-xl border border-border overflow-hidden min-h-100">
         {loading ? (
           <div className="flex items-center justify-center h-full pt-20">
             <Loader2 className="w-8 h-8 animate-spin text-brand" />
@@ -68,7 +68,7 @@ export default function OrdersPage() {
                     <td className="px-6 py-4 font-medium text-white">{order._id.substring(0, 10)}...</td>
                     <td className="px-6 py-4 text-gray-300">{order.user?.name || "Guest"}</td>
                     <td className="px-6 py-4 text-gray-300">{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td className="px-6 py-4 text-gray-300">${order.totalPrice?.toFixed(2)}</td>
+                    <td className="px-6 py-4 text-gray-300">{order.total?.toFixed(2)}</td>
                     <td className="px-6 py-4">
                       <span
                         className={`px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(order.status || order.orderStatus || "Processing")}`}

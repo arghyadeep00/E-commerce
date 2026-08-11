@@ -73,7 +73,7 @@ export default function Dashboard() {
                      <p className="text-xs text-gray-400">{order._id}</p>
                    </div>
                    <div className="text-right">
-                     <p className="text-sm font-bold text-brand">${order.totalPrice?.toFixed(2)}</p>
+                     <p className="text-sm font-bold text-brand">{order.total?.toFixed(2)}</p>
                      <p className="text-xs text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</p>
                    </div>
                  </div>

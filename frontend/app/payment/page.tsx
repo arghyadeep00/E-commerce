@@ -20,7 +20,7 @@ export default function PaymentPage() {
   const dispatch = useAppDispatch();
   const { shippingAddress, paymentMethod: currentPaymentMethod } = useAppSelector((state) => state.cart);
 
-  const [paymentMethod, setPaymentMethod] = useState(currentPaymentMethod || "PayPal");
+  const [paymentMethod, setPaymentMethod] = useState(currentPaymentMethod || "Razorpay");
 
   useEffect(() => {
     if (!shippingAddress?.address) {
@@ -53,29 +53,16 @@ export default function PaymentPage() {
             <div className="space-y-4">
               {/* Custom Radio Button Style for Payment Methods */}
               <div 
-                className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-colors ${paymentMethod === 'PayPal' ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
-                onClick={() => setPaymentMethod('PayPal')}
+                className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-colors ${paymentMethod === 'Razorpay' ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
+                onClick={() => setPaymentMethod('Razorpay')}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${paymentMethod === 'PayPal' ? 'border-primary' : 'border-muted-foreground'}`}>
-                    {paymentMethod === 'PayPal' && <div className="w-3 h-3 rounded-full bg-primary" />}
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${paymentMethod === 'Razorpay' ? 'border-primary' : 'border-muted-foreground'}`}>
+                    {paymentMethod === 'Razorpay' && <div className="w-3 h-3 rounded-full bg-primary" />}
                   </div>
-                  <Label className="cursor-pointer font-medium text-lg">PayPal / Credit Card</Label>
+                  <Label className="cursor-pointer font-medium text-lg">Razorpay</Label>
                 </div>
-                {paymentMethod === 'PayPal' && <CheckCircle2 className="h-5 w-5 text-primary" />}
-              </div>
-
-              <div 
-                className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-colors ${paymentMethod === 'Stripe' ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
-                onClick={() => setPaymentMethod('Stripe')}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${paymentMethod === 'Stripe' ? 'border-primary' : 'border-muted-foreground'}`}>
-                    {paymentMethod === 'Stripe' && <div className="w-3 h-3 rounded-full bg-primary" />}
-                  </div>
-                  <Label className="cursor-pointer font-medium text-lg">Stripe</Label>
-                </div>
-                {paymentMethod === 'Stripe' && <CheckCircle2 className="h-5 w-5 text-primary" />}
+                {paymentMethod === 'Razorpay' && <CheckCircle2 className="h-5 w-5 text-primary" />}
               </div>
             </div>
             
