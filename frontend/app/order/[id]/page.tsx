@@ -27,7 +27,6 @@ export default function OrderDetailsPage() {
 
   useEffect(() => {
     if (!orderId) return;
-
     const fetchOrderDetails = async () => {
       try {
         const { data } = await api.get(`/orders/${orderId}`);
@@ -92,7 +91,7 @@ export default function OrderDetailsPage() {
             Order #{order.orderNumber}
           </p>
         </div>
-        <Button variant="outline" asChild>
+        <Button variant="outline">
           <Link href="/orders">Back to Orders</Link>
         </Button>
       </div>

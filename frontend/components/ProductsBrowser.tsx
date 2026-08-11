@@ -15,6 +15,7 @@ export interface ProductsBrowserProps {
   hideHeader?: boolean;
   title?: string;
   subtitle?: string;
+  searchQuery?: string;
 }
 
 export default function ProductsBrowser({
@@ -23,6 +24,7 @@ export default function ProductsBrowser({
   hideHeader = false,
   title = "All Products",
   subtitle = "Showing products",
+  searchQuery = "",
 }: ProductsBrowserProps) {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,6 +76,7 @@ export default function ProductsBrowser({
       if (minPrice) params.append("minPrice", minPrice);
       if (maxPrice) params.append("maxPrice", maxPrice);
       params.append("sort", sort);
+      if (searchQuery) params.append("search", searchQuery);
 
       const { data } = await api.get(`/products?${params.toString()}`);
       const prods = Array.isArray(data) ? data : data.products || [];
@@ -83,7 +86,7 @@ export default function ProductsBrowser({
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory, selectedBrand, minPrice, maxPrice, sort]);
+  }, [selectedCategory, selectedBrand, minPrice, maxPrice, sort, searchQuery]);
 
   // Initial fetch and fetch on sort change
   useEffect(() => {

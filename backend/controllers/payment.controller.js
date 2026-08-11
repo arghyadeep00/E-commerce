@@ -18,7 +18,7 @@ export const createIntentPayment = asyncHandler(async (req, res) => {
   });
 
   const options = {
-    amount: Math.round(order.total * 100), // amount in smallest currency unit (paise)
+    amount: Math.round(order.total * 100),
     currency: "INR",
     receipt: order._id.toString(),
   };
@@ -36,6 +36,8 @@ export const createIntentPayment = asyncHandler(async (req, res) => {
   }
 });
 
+import Product from '../models/Product.js';
+
 export const verifyPayment = asyncHandler(async (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature, orderId } = req.body;
 
@@ -48,8 +50,28 @@ export const verifyPayment = asyncHandler(async (req, res) => {
   if (razorpay_signature === expectedSign) {
     const order = await Order.findById(orderId);
     if (order) {
-      order.paymentStatus = 'completed';
-      await order.save();
+      if (order.paymentStatus !== 'completed') {
+        order.paymentStatus = 'completed';
+        await order.save();
+
+        for (const item of order.products) {
+          const product = await Product.findById(item.product);
+          if (product) {
+            product.stock = Math.max(0, product.stock - item.quantity);
+            product.sold += item.quantity;
+
+            if (item.variant && product.variants && product.variants.length > 0) {
+              const variant = product.variants.find(
+                (v) => v._id.toString() === item.variant.toString()
+              );
+              if (variant) {
+                variant.stock = Math.max(0, variant.stock - item.quantity);
+              }
+            }
+            await product.save();
+          }
+        }
+      }
       res.status(200).json({ message: "Payment verified successfully" });
     } else {
       res.status(404);

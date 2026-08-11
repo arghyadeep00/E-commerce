@@ -69,7 +69,7 @@ export default function PlaceOrderPage() {
         const { data: intentData } = await api.post("/payment/create-intent", { orderId: data._id });
 
         const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TNiJNixeLIOX25',
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
           amount: intentData.amount,
           currency: intentData.currency,
           name: "E-commerce App",

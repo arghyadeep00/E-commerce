@@ -84,8 +84,10 @@ export default function ShippingPage() {
             <div className="text-center py-12">
               <h3 className="text-lg font-medium mb-2">No addresses found</h3>
               <p className="text-muted-foreground mb-6">You need to add a shipping address before proceeding.</p>
-              <Button asChild>
-                <Link href="/address">Add New Address</Link>
+              <Button>
+                  <Link href="/address">
+                    Add New Address
+                  </Link>
               </Button>
             </div>
           ) : (
@@ -124,9 +126,11 @@ export default function ShippingPage() {
               </div>
               
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t pt-6">
-                <Button variant="outline" type="button" asChild className="w-full sm:w-auto">
-                  <Link href="/address"><Plus className="h-4 w-4 mr-2" /> Add a new address</Link>
-                </Button>
+                <Link href="/address">
+                  <Button variant="outline" type="button" className="w-full sm:w-auto p-4">
+                    <Plus className="h-4 w-4 mr-2" /> Add a new address
+                  </Button>
+                </Link>
                 
                 <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={!selectedAddressId}>
                   Continue to Payment

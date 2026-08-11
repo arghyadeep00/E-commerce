@@ -6,9 +6,17 @@ import User from "../models/User.js";
 import Review from "../models/Review.js";
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const { category, brand, minPrice, maxPrice, sort } = req.query;
+  const { category, brand, minPrice, maxPrice, sort, search } = req.query;
 
   let query = {};
+
+  // Text search
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } }
+    ];
+  }
 
   if (category && category !== 'All') query.category = category;
   if (brand && brand !== 'All') query.brand = brand;

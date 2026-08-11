@@ -15,7 +15,10 @@ export const getUsers = asyncHandler(async (req, res) => {
 });
 
 export const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate('user', 'id name email').sort({ createdAt: -1 });
+  const orders = await Order.find({})
+    .populate('user', 'firstName lastName email')
+    .populate('products.product', 'name price images')
+    .sort({ createdAt: -1 });
   res.status(200).json(orders);
 });
 
